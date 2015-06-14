@@ -17,14 +17,35 @@ let makeMove column (pitch: int[,]) =
         | i -> testLoop (i+1)
     testLoop 0
 
-let won x y pitch = true
+let won x y pitch = false
+
+let getLine x pitch = 
+    let rec lineLoop index slotValue =
+        match slotValue with
+        | _ when index >= Array2D.length2 pitch -> failwith "NO FREE SLOT FOUND"
+        | 0 -> index-1
+        | _ -> lineLoop (index+1) pitch.[x, index]
+    lineLoop 0 999
 
 let game (p1: IConnectFour) (p2: IConnectFour) =
+    let players = [|p1;p2|]
+    let mutable playerIndex = 0
+
+    let getNextPlayer = 
+        match playerIndex with
+        | 0 -> playerIndex <- playerIndex+1
+        | 1 -> playerIndex <- playerIndex-1
+        |_ -> failwith "INVALID PLAYERINDEX"
+        players.[playerIndex]
+
     let rec move (player: IConnectFour) (pitchSoFar:int[,]) =
-        let move = player.Move(pitchSoFar)
-        match isValidMove move pitchSoFar with
-        | true -> makeMove move pitchSoFar
-        | _ -> failwith "Invalid move"
-    move p1 (Array2D.create 7 6 0)
+        let column = player.Move(pitchSoFar)
+        match isValidMove column pitchSoFar with
+        | true -> 
+                  match won move (getLine column pitchSoFar) (makeMove column pitchSoFar) with
+                  | true -> player
+                  | _ -> move getNextPlayer pitchSoFar
+        | _ -> failwith "INVALID MOVE"
+    move players.[playerIndex] (Array2D.create 7 6 0)
 
     
