@@ -42,7 +42,7 @@ let game (p1: IConnectFour) (p2: IConnectFour) =
         let column = player.Move(pitchSoFar)
         match isValidMove column pitchSoFar with
         | true -> 
-                  match won move (getLine column pitchSoFar) (makeMove column pitchSoFar) with
+                  match won column (getLine column pitchSoFar) (makeMove column pitchSoFar) with
                   | true -> player
                   | _ -> move getNextPlayer pitchSoFar
         | _ -> failwith "INVALID MOVE"
