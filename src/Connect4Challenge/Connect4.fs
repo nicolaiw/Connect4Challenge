@@ -66,7 +66,7 @@ let won x y pitch = false
 let getLine x pitch = 
     let rec lineLoop index slotValue =
         match slotValue with
-        | _ when index >= Array2D.length2 pitch -> failwith "NO FREE SLOT FOUND"
+        | _ when index >= Array2D.length2 pitch -> failwith "No free slot found on column " + index-1
         | 0 -> index-1
         | _ -> lineLoop (index+1) pitch.[x, index]
     lineLoop 0 999
