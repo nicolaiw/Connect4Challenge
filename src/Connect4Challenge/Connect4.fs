@@ -9,8 +9,8 @@ type Move =
 
 let isValidMove column pitch = 
     match column with
-    | _ when column < 0 || column > Array2D.length1 pitch  -> Invalid("Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.") // between 0 and 6
-    | _ when pitch.[column, Array2D.length2 pitch] <> 0 -> Invalid("Colum " + column.ToString() + " is Full.") // check if column is not full
+    | i when i < 0 || i > Array2D.length1 pitch  -> Invalid("Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.\n Given: " + i.ToString()) // between 0 and 6 (on an 7x6 pitch)
+    | i when pitch.[i, Array2D.length2 pitch] <> 0 -> Invalid("Column " + i.ToString() + " is Full.") // check if column is full
     | _ -> Valid
 
 let makeMove column (pitch: int[,]) = 
