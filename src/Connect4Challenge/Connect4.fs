@@ -5,7 +5,11 @@ open Connect4Challenge
 
 type Move =       
    | Invalid of string          
-   | Valid     
+   | Valid
+   
+type MoveResult =
+    | Won of (int*int) list //return the coordinates
+    | None
 
 let isValidMove column pitch = 
     match column with
@@ -47,19 +51,50 @@ let makeMove column (pitch: int[,]) =
     *------------------------------------------------------------*
     
         1. x+1 < connect4                   --> don't test leftward
-                                            --> also don't test diagonal left-up-ward
-                                            --> also don't test diagonal left-down-ward
-        2. x+1 + connect4 > xMax            --> don't test rightward
-                                            --> also don't test diagonal right-up-ward 
-                                            --> also don't test diagonal left-down-ward
-        3. else                             
-           4. y+1 < connect4                  --> don't test downward
-                                              --> also don't test left-down-ward
-                                              --> also don't test right-down-ward
-           5. y+1 + connect4 > yMax           --> NEVER test upward (because just the current move will be tested)
-                                              --> also don't test left-up-ward
-                                              --> also don't test right-up-ward
+        2. x + connect4 > xMax              --> don't test rightward
+        3. --                               --> NEVER test upward (because just the current move will be tested)
+        4. ..                               
 *)
+
+
+let getRowSum row = 
+                let rowSum = 
+                            row
+                            |> Seq.cast<int> 
+                            |> Seq.reduce (fun last current -> last + current)
+                rowSum
+
+
+let getColumnIndices row = 
+                let indices = Array2D.mapi (fun x _ _-> x) row 
+                              |> Seq.cast<int>
+                              |> Seq.toList
+                indices
+    
+
+let getMoveResult howManyInARow rowIndex row = 
+                        let rowSum = getRowSum row
+                        match rowSum with
+                        | sum when sum = howManyInARow -> Won ( 
+                                                                getColumnIndices row 
+                                                                |> List.map (fun x -> (x, rowIndex))
+                                                              )
+                        | _ -> None
+                    
+
+let checkLeftWard (x, y) howManyInARow (pitch: int[,])  =
+    match (x, y) with
+    | (x,_) when x+1 < howManyInARow -> None
+    | (x,y) ->  let possibleConnect = pitch.[x-(howManyInARow-1)..x, y..y]
+                getMoveResult howManyInARow y possibleConnect
+
+
+let checkRightWard (x, y) howManyInARow (pitch: int[,]) =
+    match (x,y) with
+    | (x,_) when (x + howManyInARow) > (Array2D.length1 pitch) -> None
+    | (x,y) ->  let possibleConnect = pitch.[x..(x + howManyInARow - 1), y..y]
+                getMoveResult howManyInARow y possibleConnect
+                
 
 let won x y pitch = false
 
@@ -79,7 +114,7 @@ let game (p1: IConnectFour) (p2: IConnectFour) =
         match playerIndex with
         | 0 -> playerIndex <- playerIndex+1
         | 1 -> playerIndex <- playerIndex-1
-        |_ -> failwith "INVALID PLAYERINDEX"
+        |_ -> failwith "Invalid player index" // should never appear
         players.[playerIndex]
 
     let rec move (player: IConnectFour) (pitchSoFar:int[,]) =
