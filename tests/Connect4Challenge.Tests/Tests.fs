@@ -41,7 +41,7 @@ let ``shuld return Won (checkLeftWard)`` () =
     array.[2,0] <- 1
     array.[3,0] <- 1
 
-    let res = checkLeftWard (3,0) 4 array
+    let res = leftCheck (3,0) 4 array
 
     let moveResult = match res with
                         |Won(list) -> list 
@@ -72,7 +72,7 @@ let ``shuld return Won (checkRightWard)`` () =
     array.[5,1] <- 1
     array.[6,1] <- 1
 
-    let res = checkRightWard (3,1) 4 array
+    let res = rightCheck (3,1) 4 array
 
     let moveResult = match res with
                         |Won(list) -> list 
@@ -82,4 +82,65 @@ let ``shuld return Won (checkRightWard)`` () =
                         |None -> false
 
     Assert.AreEqual(true, moveResult)
+
+[<Test>]
+let ``shuld return Won (checkDownWard)`` () =
+    let array = Array2D.create 7 6 0
+
+    (*
+       _____________
+    5 |_|_|_|_|_|_|_|
+    4 |_|_|_|x|_|_|_|
+    3 |_|_|_|x|_|_|_|
+    2 |_|_|_|x|_|_|_|
+    1 |_|_|_|x|_|_|_| 
+    0 |_|_|_|_|_|_|_| 
+       0 1 2 3 4 5 6  
+    *)
+
+    array.[3,4] <- 1
+    array.[3,3] <- 1
+    array.[3,2] <- 1
+    array.[3,1] <- 1
+
+    let res = downCheck (3,4) 4 array
+
+    let moveResult = match res with
+                        |Won(list) -> list 
+                                        |> List.map (fun (x,y) -> printfn "x:%i y:%i" x y)
+                                        |> ignore
+                                      true
+                        |None -> false
+
+    Assert.AreEqual(true, moveResult)
+
+[<Test>]
+let ``invert pitch (sould return -4)`` () =
+    let array = Array2D.create 7 6 0
+
+    (*
+       _____________
+    5 |_|_|_|_|_|_|_|
+    4 |_|_|_|x|_|_|_|
+    3 |_|_|_|x|_|_|_|
+    2 |_|_|_|x|_|_|_|
+    1 |_|_|_|x|_|_|_| 
+    0 |_|_|_|_|_|_|_| 
+       0 1 2 3 4 5 6  
+    *)
+
+    array.[3,4] <- 1
+    array.[3,3] <- 1
+    array.[3,2] <- 1
+    array.[3,1] <- 1
+    
+    printfn "BEFORE: %i" (array.[3..3, 1..4] |> Seq.cast<int> |> Seq.reduce (fun acc elem -> acc + elem))
+
+    let invertetPitch = invertPitch array
+
+    let res = invertetPitch.[3..3, 1..4] |> Seq.cast<int> |> Seq.reduce (fun acc elem -> acc + elem)
+    
+    printfn "AFTER: %i" res
+
+    Assert.AreEqual(-4, res)
 
