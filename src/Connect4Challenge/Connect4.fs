@@ -20,8 +20,8 @@ let isValidMove column pitch =
 let makeMove column (pitch: int[,]) = 
     let rec testLoop currentLineIndex=
         match currentLineIndex with
-        | i when pitch.[column, currentLineIndex] = 0 -> pitch.[column, i] <- 1 // 1 = yours, 0 = empty, -1 = theirs
-                                                         pitch
+        | i when pitch.[column, i] = 0 -> pitch.[column, i] <- 1 // 1 = yours, 0 = empty, -1 = theirs
+                                          pitch
         | i -> testLoop (i+1)
     testLoop 0
 
@@ -73,36 +73,38 @@ let getMoveResult howManyInARow valuesAndIndices = let sum = valuesAndIndices
                                                    match sum with
                                                    | s when s = howManyInARow -> Won(valuesAndIndices |> List.map (fun (_,indices) -> indices))
                                                    | _ -> None
-                                          
 
-let checkLeftBounds (x,_) howManyInARow (pitch: int[,]) = x+1 < howManyInARow
-let checkRightBounds (x,_) howManyInARow (pitch: int[,]) = x + howManyInARow > Array2D.length1 pitch
-let checkDownBounds (_,y) howManyInARow (pitch: int[,]) = y+1 < howManyInARow
 
-                
-let leftResult (x, y) howManyInARow (pitch: int[,]) = getValuesWithIndices (x) (fun x -> x-1) y (fun y -> y) howManyInARow pitch
-                                                      |> getMoveResult howManyInARow 
+let getResult (x, y) howManyInARow getNextX getNextY (pitch: int[,]) = getValuesWithIndices x getNextX y getNextY howManyInARow pitch
+                                                                       |> getMoveResult howManyInARow
 
-let rightResult (x,y) howManyInARow (pitch: int[,]) = getValuesWithIndices x (fun x -> x+1) y (fun y -> y) howManyInARow pitch
-                                                      |> getMoveResult howManyInARow 
-
-let downResult (x,y) howManyInARow (pitch: int[,]) = getValuesWithIndices x (fun x -> x) y (fun y -> y-1) howManyInARow pitch
-                                                     |> getMoveResult howManyInARow
-
+    
 let check (x,y) howManyInARow checkBounds calcResult (pitch: int[,])= 
     match checkBounds (x,y) howManyInARow pitch with
     | true -> None
     | _ -> calcResult (x,y) howManyInARow pitch
 
-let invertPitch (pitch: int[,]) = Array2D.map (fun elem -> elem * (-1)) pitch
-                                               
 
+let checkLeftBounds (x,_) howManyInARow (pitch: int[,]) = x+1 < howManyInARow
+let checkRightBounds (x,_) howManyInARow (pitch: int[,]) = x + howManyInARow > Array2D.length1 pitch
+let checkDownBounds (_,y) howManyInARow (pitch: int[,]) = y+1 < howManyInARow
+
+
+let leftResult (x, y) howManyInARow (pitch: int[,]) = getResult (x,y) howManyInARow (fun x -> x-1) (fun y -> y) pitch
+let rightResult (x,y) howManyInARow (pitch: int[,]) = getResult (x,y) howManyInARow (fun x -> x+1) (fun y -> y) pitch
+let downResult (x,y) howManyInARow (pitch: int[,]) = getResult (x,y) howManyInARow (fun x -> x) (fun y -> y-1) pitch
+
+
+//Highlevel API checks
 let leftCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkLeftBounds leftResult pitch
 let rightCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkRightBounds rightResult pitch
 let downCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkDownBounds downResult pitch
-//TODO: add missing Checks
 
-let won x y pitch = false
+
+let invertPitch (pitch: int[,]) = Array2D.map (fun elem -> elem * (-1)) pitch
+
+
+let won (x,y) howManyInARow pitch = false
 
 let getLine x pitch = 
     let rec lineLoop index slotValue =
@@ -112,7 +114,7 @@ let getLine x pitch =
         | _ -> lineLoop (index+1) pitch.[x, index]
     lineLoop 0 999
 
-let game (p1: IConnectFour) (p2: IConnectFour) =
+let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]) =
     let players = [|p1;p2|]
     let mutable playerIndex = 0
 
@@ -126,11 +128,11 @@ let game (p1: IConnectFour) (p2: IConnectFour) =
     let rec move (player: IConnectFour) (pitchSoFar:int[,]) =
         let column = player.Move(pitchSoFar)
         match isValidMove column pitchSoFar with
-        | Valid ->       // x       y                           pitch with modified state
-                  match won column (getLine column pitchSoFar) (makeMove column pitchSoFar) with
+        | Valid ->        // x        y                           usualy 4       pitch with modified state
+                  match won (column, (getLine column pitchSoFar)) howManyinARow (makeMove column pitchSoFar) with
                   | true -> player
                   | _ -> move getNextPlayer pitchSoFar
         | Invalid(txt) -> failwith ("INVALID MOVE: " + txt)
-    move players.[playerIndex] (Array2D.create 7 6 0)
+    move players.[playerIndex] startPitch //(Array2D.create 7 6 0)
 
     
