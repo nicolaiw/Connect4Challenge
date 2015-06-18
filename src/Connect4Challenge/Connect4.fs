@@ -44,7 +44,7 @@ type MoveResult =
 
 let isValidMove column pitch = 
     match column with
-    | i when i < 0 || i > Array2D.length1 pitch  -> Invalid("Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.\n Given: " + i.ToString()) // between 0 and 6 (on an 7x6 pitch)
+    | i when i < 0 || i > Array2D.length1 pitch  -> Invalid("Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.\n Given: " + i.ToString()) // between 0 and 6 (on a 7x6 pitch)
     | i when pitch.[i, Array2D.length2 pitch] <> 0 -> Invalid("Column " + i.ToString() + " is Full.") // check if column is full
     | _ -> Valid
 
@@ -96,11 +96,11 @@ let invertPitch pitch = Array2D.map (fun elem -> elem * (-1)) pitch
 let won (x,y) howManyInARow pitch = false
 
 let getLine x pitch = 
-    let rec lineLoop index slotValue =
+    let rec lineLoop lineIndex slotValue =
         match slotValue with
-        | _ when index >= Array2D.length2 pitch -> failwith "No free slot found on column " + index-1
-        | 0 -> index-1
-        | _ -> lineLoop (index+1) pitch.[x, index]
+        | _ when lineIndex >= Array2D.length2 pitch -> failwith "No free slot found on column " + x
+        | 0 -> lineIndex-1
+        | _ -> lineLoop (lineIndex+1) pitch.[x, lineIndex]
     lineLoop 0 999
 
 let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]) =
