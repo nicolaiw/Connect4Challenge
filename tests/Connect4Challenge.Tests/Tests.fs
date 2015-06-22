@@ -114,6 +114,133 @@ let ``shuld return Won (checkDownWard)`` () =
 
     Assert.AreEqual(true, moveResult)
 
+
+[<Test>]
+let ``shuld return Won (checkDownLeftBounds)`` () =
+    let array = Array2D.create 7 6 0
+
+    (*
+       _____________
+    5 |_|_|_|_|_|_|_|
+    4 |_|_|_|x|_|_|_|
+    3 |_|_|x|_|_|_|_|
+    2 |_|x|_|_|_|_|_|
+    1 |x|_|_|_|_|_|_| 
+    0 |_|_|_|_|_|_|_| 
+       0 1 2 3 4 5 6  
+    *)
+
+    array.[0,1] <- 1
+    array.[1,2] <- 1
+    array.[2,3] <- 1
+    array.[3,4] <- 1
+
+    let res = downLeftCheck (3,4) 4 array
+
+    let moveResult = match res with
+                        |Won(list) -> list 
+                                        |> List.map (fun (x,y) -> printfn "x:%i y:%i" x y)
+                                        |> ignore
+                                      true
+                        |None -> false
+
+    Assert.AreEqual(true, moveResult)
+
+[<Test>]
+let ``shuld return Won (checkUpRightWard)`` () =
+    let array = Array2D.create 7 6 0
+
+    (*
+       _____________
+    5 |_|_|_|_|_|_|_|
+    4 |_|_|_|x|_|_|_|
+    3 |_|_|x|_|_|_|_|
+    2 |_|x|_|_|_|_|_|
+    1 |x|_|_|_|_|_|_| 
+    0 |_|_|_|_|_|_|_| 
+       0 1 2 3 4 5 6  
+    *)
+
+    array.[0,1] <- 1
+    array.[1,2] <- 1
+    array.[2,3] <- 1
+    array.[3,4] <- 1
+
+    let res = upRightCheck (0,1) 4 array
+
+    let moveResult = match res with
+                        |Won(list) -> list 
+                                        |> List.map (fun (x,y) -> printfn "x:%i y:%i" x y)
+                                        |> ignore
+                                      true
+                        |None -> false
+
+    Assert.AreEqual(true, moveResult)
+
+[<Test>]
+let ``shuld return Won (checkDownRightWard)`` () =
+    let array = Array2D.create 7 6 0
+
+    (*
+       _____________
+    5 |_|_|_|_|_|_|_|
+    4 |_|_|_|x|_|_|_|
+    3 |_|_|_|_|x|_|_|
+    2 |_|_|_|_|_|x|_|
+    1 |_|_|_|_|_|_|x| 
+    0 |_|_|_|_|_|_|_| 
+       0 1 2 3 4 5 6  
+    *)
+
+    array.[3,4] <- 1
+    array.[4,3] <- 1
+    array.[5,2] <- 1
+    array.[6,1] <- 1
+
+    let res = downRightCheck (3,4) 4 array
+
+    let moveResult = match res with
+                        |Won(list) -> list 
+                                        |> List.map (fun (x,y) -> printfn "x:%i y:%i" x y)
+                                        |> ignore
+                                      true
+                        |None -> false
+
+    Assert.AreEqual(true, moveResult)
+
+[<Test>]
+let ``shuld return Won (checkUpLeftWard)`` () =
+    let array = Array2D.create 7 6 0
+
+    (*
+       _____________
+    5 |_|_|_|_|_|_|_|
+    4 |_|_|_|x|_|_|_|
+    3 |_|_|_|_|x|_|_|
+    2 |_|_|_|_|_|x|_|
+    1 |_|_|_|_|_|_|x| 
+    0 |_|_|_|_|_|_|_| 
+       0 1 2 3 4 5 6  
+    *)
+
+    array.[3,4] <- 1
+    array.[4,3] <- 1
+    array.[5,2] <- 1
+    array.[6,1] <- 1
+
+    let res = upLeftCheck (6,1) 4 array
+
+    let moveResult = match res with
+                        |Won(list) -> list 
+                                        |> List.map (fun (x,y) -> printfn "x:%i y:%i" x y)
+                                        |> ignore
+                                      true
+                        |None -> false
+
+    Assert.AreEqual(true, moveResult)
+
+
+
 [<Test>]
 let ``invert pitch (sould return -4)`` () =
     let array = Array2D.create 7 6 0

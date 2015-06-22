@@ -81,15 +81,34 @@ let check (x,y) howManyInARow checkBounds calcResult pitch= match checkBounds (x
 let checkLeftBounds (x,_) howManyInARow _ = x+1 < howManyInARow
 let checkRightBounds (x,_) howManyInARow pitch = x + howManyInARow > Array2D.length1 pitch
 let checkDownBounds (_,y) howManyInARow _ = y+1 < howManyInARow
+let checkUpBounds (_,y) howManyInARow pitch = y + howManyInARow > Array2D.length2 pitch
+let checkDownLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::checkDownBounds::[] 
+                                                    |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
+let checkDownRightBounds (x,y) howManyInARow pitch = checkRightBounds::checkDownBounds::[]
+                                                     |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
+let checkUpLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::checkUpBounds::[]
+                                                  |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
+let checkUpRightBounds (x,y) howManyInARow pitch = checkRightBounds::checkUpBounds::[]
+                                                   |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
 
-let leftResult (x, y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun y -> y) pitch
+
+let leftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun y -> y) pitch
 let rightResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x+1) (fun y -> y) pitch
 let downResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x) (fun y -> y-1) pitch
+let downLeftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun y -> y-1) pitch
+let downRigthResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x+1) (fun y -> y-1) pitch
+let upLeftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun y -> y+1) pitch
+let upRightResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x+1) (fun y -> y+1) pitch
+
 
 //Highlevel API checks
 let leftCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkLeftBounds leftResult pitch
 let rightCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkRightBounds rightResult pitch
 let downCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkDownBounds downResult pitch
+let downLeftCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkDownLeftBounds downLeftResult pitch
+let downRightCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkDownRightBounds downRigthResult pitch
+let upLeftCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkUpLeftBounds upLeftResult pitch
+let upRightCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkUpRightBounds upRightResult pitch
 
 let invertPitch pitch = Array2D.map (fun elem -> elem * (-1)) pitch
 
