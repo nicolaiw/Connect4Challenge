@@ -112,7 +112,25 @@ let upRightCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkUpRi
 
 let invertPitch pitch = Array2D.map (fun elem -> elem * (-1)) pitch
 
-let won (x,y) howManyInARow pitch = false
+// TODO: wirte some tests
+let won (x,y) howManyInARow pitch = 
+    let addToCheckList f list = f::list
+    let checkList = []
+                    |> addToCheckList leftCheck 
+                    |> addToCheckList rightCheck
+                    |> addToCheckList downCheck
+                    |> addToCheckList downLeftCheck
+                    |> addToCheckList downRightCheck
+                    |> addToCheckList upLeftCheck
+                    |> addToCheckList upRightCheck
+                    |> List.map (fun checkFun -> checkFun (x,y) howManyInARow pitch)
+    let rec getResults results acc =
+            match results with
+            | [] -> acc
+            | h::t -> match h with
+                      | Won(cords) -> getResults t (cords::acc)
+                      | None -> getResults t acc
+    getResults checkList []
 
 let getLine x pitch = 
     let rec lineLoop lineIndex slotValue =
@@ -136,10 +154,10 @@ let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]
     let rec move (player: IConnectFour) pitchSoFar =
         let column = player.Move(pitchSoFar)
         match isValidMove column pitchSoFar with
-        | Valid ->        // x        y                           usualy 4       pitch with modified state
-                  match won (column, (getLine column pitchSoFar)) howManyinARow (makeMove column pitchSoFar) with
-                  | true -> player
-                  | _ -> move getNextPlayer pitchSoFar
+        | Valid -> match won (column, (getLine column pitchSoFar)) howManyinARow (makeMove column pitchSoFar) with
+                   | [] -> move getNextPlayer pitchSoFar
+                   | _::_ -> player //to something with the list of lists with coordinates
+                   
         | Invalid(txt) -> failwith ("INVALID MOVE: " + txt)
     move players.[playerIndex] startPitch //(Array2D.create 7 6 0)
 

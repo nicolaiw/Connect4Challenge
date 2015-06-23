@@ -22,7 +22,7 @@ let ``should return 2 (getLine)`` () =
     Assert.AreEqual(line, 2)
 
 [<Test>]
-let ``shuld return Won (checkLeftWard)`` () =
+let ``should return Won (checkLeftWard)`` () =
     let array = Array2D.create 7 6 0
 
     (*
@@ -53,7 +53,7 @@ let ``shuld return Won (checkLeftWard)`` () =
     Assert.AreEqual(true, moveResult)
 
 [<Test>]
-let ``shuld return Won (checkRightWard)`` () =
+let ``should return Won (checkRightWard)`` () =
     let array = Array2D.create 7 6 0
 
     (*
@@ -84,7 +84,7 @@ let ``shuld return Won (checkRightWard)`` () =
     Assert.AreEqual(true, moveResult)
 
 [<Test>]
-let ``shuld return Won (checkDownWard)`` () =
+let ``should return Won (checkDownWard)`` () =
     let array = Array2D.create 7 6 0
 
     (*
@@ -116,7 +116,7 @@ let ``shuld return Won (checkDownWard)`` () =
 
 
 [<Test>]
-let ``shuld return Won (checkDownLeftBounds)`` () =
+let ``should return Won (checkDownLeftBounds)`` () =
     let array = Array2D.create 7 6 0
 
     (*
@@ -147,7 +147,7 @@ let ``shuld return Won (checkDownLeftBounds)`` () =
     Assert.AreEqual(true, moveResult)
 
 [<Test>]
-let ``shuld return Won (checkUpRightWard)`` () =
+let ``should return Won (checkUpRightWard)`` () =
     let array = Array2D.create 7 6 0
 
     (*
@@ -178,7 +178,7 @@ let ``shuld return Won (checkUpRightWard)`` () =
     Assert.AreEqual(true, moveResult)
 
 [<Test>]
-let ``shuld return Won (checkDownRightWard)`` () =
+let ``should return Won (checkDownRightWard)`` () =
     let array = Array2D.create 7 6 0
 
     (*
@@ -209,7 +209,7 @@ let ``shuld return Won (checkDownRightWard)`` () =
     Assert.AreEqual(true, moveResult)
 
 [<Test>]
-let ``shuld return Won (checkUpLeftWard)`` () =
+let ``should return Won (checkUpLeftWard)`` () =
     let array = Array2D.create 7 6 0
 
     (*
@@ -242,7 +242,7 @@ let ``shuld return Won (checkUpLeftWard)`` () =
 
 
 [<Test>]
-let ``invert pitch (sould return -4)`` () =
+let ``invert pitch (should return -4)`` () =
     let array = Array2D.create 7 6 0
 
     (*
