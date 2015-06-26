@@ -238,6 +238,49 @@ let ``should return Won (checkUpLeftWard)`` () =
 
     Assert.AreEqual(true, moveResult)
 
+[<Test>]
+let ``should return Won (downLeft, downRight, right)`` () =
+    let array = Array2D.create 7 6 0
+
+    (*
+       _____________
+    5 |_|_|_|_|_|_|_|
+    4 |_|_|_|_|_|_|_|
+    3 |_|_|_|x|x|x|x|
+    2 |_|_|x|_|x|_|_|
+    1 |_|x|_|_|_|x|_| 
+    0 |x|_|_|_|_|_|x| 
+       0 1 2 3 4 5 6  
+    *)
+
+    array.[0,0] <- 1
+    array.[1,1] <- 1
+    array.[2,2] <- 1
+    array.[3,3] <- 1
+    array.[4,3] <- 1
+    array.[5,3] <- 1
+    array.[6,3] <- 1
+    array.[4,2] <- 1
+    array.[5,1] <- 1
+    array.[6,0] <- 1
+
+
+    let res = won (3,3) 4 array
+
+
+
+    let rec result r acc = match r with
+                            |h::t-> h 
+                                    |> List.map (fun (x,y) -> printfn "x:%i y:%i" x y)
+                                    |> ignore
+                                    result t true
+                            |[] -> acc
+
+    let detectWon = result res false
+
+
+    Assert.AreEqual(true, detectWon)
+
 
 
 [<Test>]
