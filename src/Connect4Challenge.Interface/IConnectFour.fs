@@ -1,4 +1,4 @@
-﻿namespace Connect4Challenge
+﻿namespace Connect4Challenge.Interface
 
 type IConnectFour =
     abstract member Move: pitch:int[,] -> int

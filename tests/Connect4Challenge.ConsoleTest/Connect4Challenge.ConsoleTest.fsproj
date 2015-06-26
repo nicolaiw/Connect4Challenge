@@ -9,10 +9,11 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Connect4Challenge.ConsoleTest</RootNamespace>
     <AssemblyName>Connect4Challenge.ConsoleTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
     <Name>Connect4Challenge.ConsoleTest</Name>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +52,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Connect4Challenge.Interface\Connect4Challenge.Interface.fsproj">
+      <Name>Connect4Challenge.Interface</Name>
+      <Project>{92a13513-810b-4dbe-a8de-aa08756f3538}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Connect4Challenge\Connect4Challenge.Runtime.fsproj">
       <Name>Connect4Challenge.Runtime</Name>
       <Project>{824e4690-1d6b-4fde-b765-55d47f12d55f}</Project>

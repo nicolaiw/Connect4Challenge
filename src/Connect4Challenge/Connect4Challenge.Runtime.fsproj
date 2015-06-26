@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Connect4Challenge</RootNamespace>
     <AssemblyName>Connect4Challenge</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <Name>Connect4Challenge.Runtime</Name>
     <TargetFrameworkProfile />
@@ -48,8 +48,14 @@
     <None Include="paket.references" />
     <None Include="paket.template" />
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="IConnectFour.fs" />
     <Compile Include="Connect4.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Connect4Challenge.Interface\Connect4Challenge.Interface.fsproj">
+      <Name>Connect4Challenge.Interface</Name>
+      <Project>{92a13513-810b-4dbe-a8de-aa08756f3538}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

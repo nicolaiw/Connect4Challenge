@@ -1,8 +1,7 @@
 module Connect4Challenge.Tests
 
-open Connect4Challenge
 open NUnit.Framework
-open Connect4
+open Connect4Challenge.RunTime
 
 [<Test>]
 let ``should return 0 (getLine)`` () =

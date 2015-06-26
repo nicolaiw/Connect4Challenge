@@ -1,4 +1,4 @@
-﻿module Connect4
+﻿module Connect4Challenge.RunTime
 
 (*
     1 = yours
@@ -32,7 +32,7 @@
         5. ..                               
 *)
 
-open Connect4Challenge
+open Connect4Challenge.Interface
 
 type Move =       
    | Invalid of string          

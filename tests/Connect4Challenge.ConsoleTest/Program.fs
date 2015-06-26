@@ -1,4 +1,4 @@
-﻿open Connect4
+﻿open Connect4Challenge.RunTime
 
 
 let ``invert pitch (sould return 0)`` () =
