@@ -35,17 +35,17 @@
 open Connect4Challenge.Interface
 
 type Move =       
-   | Invalid of (int*int)*string  //return column, row and an error message        
+   | Invalid of (int*int)*string  // return column, row and an error message        
    | Valid of int*int // return column and row
    
 type MoveResult =
-    | Won of (int*int) list //return the coordinates
+    | Won of (int*int) list // return the coordinates
     | None
 
 type MoveLog =
-    | WonMove of string*((int*int) list) list //Player, List of Lists with Coordinates 
-    | FailMove of string*string*(int*int) //Player, ErrorMessage, Coordinates
-    | UsualMove of string*(int*int) //Player, Coordinates
+    | WonMove of string*((int*int) list) list // Player, List of Lists with Coordinates 
+    | FailMove of string*string*(int*int) // Player, ErrorMessage, Coordinates
+    | UsualMove of string*(int*int) // Player, Coordinates
 
 let getLine x pitch = 
     let rec lineLoop lineIndex slotValue =
@@ -115,7 +115,7 @@ let upLeftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun 
 let upRightResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x+1) (fun y -> y+1) pitch
 
 
-//Highlevel API checks
+// Highlevel API checks
 let leftCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkLeftBounds leftResult pitch
 let rightCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkRightBounds rightResult pitch
 let downCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkDownBounds downResult pitch
@@ -145,9 +145,14 @@ let won (x,y) howManyInARow pitch =
                       | None -> getResults t acc
     getResults checkList []
 
-
 // Here the magic happens
 let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]) =
+    
+    // check for max moves; also check if x*y % 2 == 0 --> otherwise --> invalidPitch (example: 3*3 = 9; 9/2 = 4,5 --> not valid because on player could do more moves than the other)
+    let maxMoves = match (Array2D.length1 startPitch, Array2D.length2 startPitch) with
+                   | (maxX,maxY) when (maxX * maxY) % 2 = 0 -> maxX*maxY
+                   | _ -> failwith ("Invalid Pitch. The number of Slots modulo 2 has to be zero")
+    
     let players = [|p1;p2|]
     let mutable playerIndex = 0
 
@@ -158,12 +163,14 @@ let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]
         |_ -> failwith "Invalid player index" // should never occour
         players.[playerIndex]
 
-    let rec move (player: IConnectFour) pitchSoFar (log: MoveLog list)=
+    let rec move (player: IConnectFour) pitchSoFar moveCount log =
         let column = player.Move(pitchSoFar)
 
         match isValidMove column pitchSoFar with
         | Valid(col,row) -> match won (col ,row) howManyinARow (makeMove col pitchSoFar) with
-                            | [] -> move getNextPlayer pitchSoFar (UsualMove(player.Name,(col,row))::log)
+                            | [] -> match moveCount with 
+                                    | count when count < maxMoves -> move getNextPlayer pitchSoFar (count+1) (UsualMove(player.Name,(col,row))::log)
+                                    | _ -> (UsualMove(player.Name,(col,row))::log) // Tie
                             | wonResults -> let usualMove = UsualMove(player.Name,(col,row))
                                             let wonMove = WonMove(player.Name, wonResults)
                                             usualMove::wonMove::log 
@@ -173,6 +180,6 @@ let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]
                                              let failMove = FailMove(player.Name, message, (col,row))
                                              usualMove::failMove::log
     
-    move players.[playerIndex] startPitch [] //(Array2D.create 7 6 0)
+    move players.[playerIndex] startPitch 0 [] //(Array2D.create 7 6 0)
 
     
