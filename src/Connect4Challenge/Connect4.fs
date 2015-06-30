@@ -35,19 +35,33 @@
 open Connect4Challenge.Interface
 
 type Move =       
-   | Invalid of string          
-   | Valid
+   | Invalid of (int*int)*string  //return column, row and an error message        
+   | Valid of int*int // return column and row
    
 type MoveResult =
     | Won of (int*int) list //return the coordinates
     | None
 
-let isValidMove column pitch = 
-    match column with
-    | i when i < 0 || i > Array2D.length1 pitch  -> Invalid("Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.\n Given: " + i.ToString()) // between 0 and 6 (on a 7x6 pitch)
-    | i when pitch.[i, Array2D.length2 pitch] <> 0 -> Invalid("Column " + i.ToString() + " is Full.") // check if column is full
-    | _ -> Valid
+type MoveLog =
+    | WonMove of string*((int*int) list) list //Player, List of Lists with Coordinates 
+    | FailMove of string*string*(int*int) //Player, ErrorMessage, Coordinates
+    | UsualMove of string*(int*int) //Player, Coordinates
 
+let getLine x pitch = 
+    let rec lineLoop lineIndex slotValue =
+        match slotValue with
+        | _ when lineIndex >= Array2D.length2 pitch -> failwith "No free slot found on column " + x
+        | 0 -> lineIndex-1
+        | _ -> lineLoop (lineIndex+1) pitch.[x, lineIndex]
+    lineLoop 0 999
+
+let isValidMove column pitch =
+    let row = getLine column pitch
+    match column with
+    | i when i < 0 || i > Array2D.length1 pitch  -> Invalid((column,row), "Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.\n Given: " + i.ToString()) // between 0 and 6 (on a 7x6 pitch)
+    | i when pitch.[i, Array2D.length2 pitch] <> 0 -> Invalid((column,row),"Column " + i.ToString() + " is Full.") // check if column is full
+    | _ -> Valid (column, getLine column pitch)
+   
 let makeMove column (pitch: int[,]) = 
     let rec testLoop currentLineIndex=
         match currentLineIndex with
@@ -72,11 +86,11 @@ let getMoveResult howManyInARow valuesAndIndices = let sum = valuesAndIndices
                                                    | _ -> None
 
 let getResult (x, y) howManyInARow getNextX getNextY pitch = getValuesWithIndices x getNextX y getNextY howManyInARow pitch
-                                                                       |> getMoveResult howManyInARow
+                                                                |> getMoveResult howManyInARow
     
 let check (x,y) howManyInARow checkBounds calcResult pitch= match checkBounds (x,y) howManyInARow pitch with
-                                                                      | true -> None
-                                                                      | _ -> calcResult (x,y) howManyInARow pitch
+                                                            | true -> None
+                                                            | _ -> calcResult (x,y) howManyInARow pitch
 
 let checkLeftBounds (x,_) howManyInARow _ = x+1 < howManyInARow
 let checkRightBounds (x,_) howManyInARow pitch = x + howManyInARow > Array2D.length1 pitch
@@ -112,7 +126,6 @@ let upRightCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkUpRi
 
 let invertPitch pitch = Array2D.map (fun elem -> elem * (-1)) pitch
 
-// TODO: wirte some tests
 let won (x,y) howManyInARow pitch = 
     let addToCheckList f list = f::list
     let checkList = []
@@ -132,14 +145,8 @@ let won (x,y) howManyInARow pitch =
                       | None -> getResults t acc
     getResults checkList []
 
-let getLine x pitch = 
-    let rec lineLoop lineIndex slotValue =
-        match slotValue with
-        | _ when lineIndex >= Array2D.length2 pitch -> failwith "No free slot found on column " + x
-        | 0 -> lineIndex-1
-        | _ -> lineLoop (lineIndex+1) pitch.[x, lineIndex]
-    lineLoop 0 999
 
+// Here the magic happens
 let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]) =
     let players = [|p1;p2|]
     let mutable playerIndex = 0
@@ -148,17 +155,24 @@ let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]
         match playerIndex with
         | 0 -> playerIndex <- playerIndex+1
         | 1 -> playerIndex <- playerIndex-1
-        |_ -> failwith "Invalid player index" // should never appear
+        |_ -> failwith "Invalid player index" // should never occour
         players.[playerIndex]
 
-    let rec move (player: IConnectFour) pitchSoFar =
+    let rec move (player: IConnectFour) pitchSoFar (log: MoveLog list)=
         let column = player.Move(pitchSoFar)
+
         match isValidMove column pitchSoFar with
-        | Valid -> match won (column, (getLine column pitchSoFar)) howManyinARow (makeMove column pitchSoFar) with
-                   | [] -> move getNextPlayer pitchSoFar
-                   | _::_ -> player //to something with the list of lists with coordinates
-                   
-        | Invalid(txt) -> failwith ("INVALID MOVE: " + txt)
-    move players.[playerIndex] startPitch //(Array2D.create 7 6 0)
+        | Valid(col,row) -> match won (col ,row) howManyinARow (makeMove col pitchSoFar) with
+                            | [] -> move getNextPlayer pitchSoFar (UsualMove(player.Name,(col,row))::log)
+                            | wonResults -> let usualMove = UsualMove(player.Name,(col,row))
+                                            let wonMove = WonMove(player.Name, wonResults)
+                                            usualMove::wonMove::log 
+                                            |> List.rev
+        | Invalid((col,row),errorMessage) -> let usualMove = UsualMove(player.Name,(col,row))
+                                             let message = "(" + col.ToString() + "," + row.ToString() + ") INVALID MOVE: " + errorMessage
+                                             let failMove = FailMove(player.Name, message, (col,row))
+                                             usualMove::failMove::log
+    
+    move players.[playerIndex] startPitch [] //(Array2D.create 7 6 0)
 
     
