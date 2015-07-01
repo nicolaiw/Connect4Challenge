@@ -148,10 +148,12 @@ let won (x,y) howManyInARow pitch =
 // Here the magic happens
 let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]) =
     
-    // check for max moves; also check if x*y % 2 == 0 --> otherwise --> invalidPitch (example: 3*3 = 9; 9/2 = 4,5 --> not valid because on player could do more moves than the other)
+    // check for max moves
+    // check wether x*y % 2 == 0 --> otherwise --> invalid pitch 
+    // example: 3*3 = 9; 9/2 = 4,5 --> not valid because on player could do more moves than the other
     let maxMoves = match (Array2D.length1 startPitch, Array2D.length2 startPitch) with
                    | (maxX,maxY) when (maxX * maxY) % 2 = 0 -> maxX*maxY
-                   | _ -> failwith ("Invalid Pitch. The number of Slots modulo 2 has to be zero")
+                   | _ -> failwith ("Invalid Pitch. The number of Slots modulo two has to be zero.")
     
     let players = [|p1;p2|]
     let mutable playerIndex = 0
