@@ -9,9 +9,9 @@ let tryCast<'a> o = match box o with
                         | _ -> None
 
 //TODO: Test it
-let loadClassFromAssembly<'a> interfaceName assemblyPath =
+let getInterfaceFromAssembly<'a> assemblyPath =
     let instance = Assembly.LoadFrom(assemblyPath).GetTypes()
-                    |> Seq.map (fun a -> a.GetInterface(interfaceName))
+                    |> Seq.map (fun a -> a.GetInterface(typeof<'a>.Name))
                     |> Seq.find (fun a -> a.GetConstructor(System.Type.EmptyTypes) <> null) // The class has to have an empty ctor so CreateInstance will not fail
     match System.Activator.CreateInstance(instance) |> tryCast<'a> with
     | Some(instance) -> instance
