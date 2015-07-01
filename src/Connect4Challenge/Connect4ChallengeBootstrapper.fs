@@ -8,14 +8,20 @@ let tryCast<'a> o = match box o with
                         | :? 'a as output -> Some output
                         | _ -> None
 
-//TODO: Test it
+//TODO: load assembly in an AppDomain (AddIn Framework)
 let getInterfaceFromAssembly<'a> assemblyPath =
-    let instance = Assembly.LoadFrom(assemblyPath).GetTypes()
-                    |> Seq.map (fun a -> a.GetInterface(typeof<'a>.Name))
-                    |> Seq.find (fun a -> a.GetConstructor(System.Type.EmptyTypes) <> null) // The class has to have an empty ctor so CreateInstance will not fail
-    match System.Activator.CreateInstance(instance) |> tryCast<'a> with
-    | Some(instance) -> instance
+    let assembly = Assembly.LoadFrom(assemblyPath);
+    let interfaceType = assembly.GetTypes()
+                        |> Seq.tryFind (fun a -> a.GetInterface(typeof<'a>.Name) <> null)
+    match interfaceType with
+    | Some(ifType) -> match System.Activator.CreateInstance(ifType) |> tryCast<'a> with
+                      | Some(instance) -> instance
+                      | None -> Unchecked.defaultof<'a>
     | None -> Unchecked.defaultof<'a>
+    
+
+   
+    
         
 
 
