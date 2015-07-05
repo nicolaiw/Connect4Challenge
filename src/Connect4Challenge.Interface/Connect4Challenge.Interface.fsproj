@@ -43,7 +43,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IConnectFour.fs" />
+    <Compile Include="ConnectFour.fs" />
     <Compile Include="AssemblyInfo.fs" />
   </ItemGroup>
   <PropertyGroup>

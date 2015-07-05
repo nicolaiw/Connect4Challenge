@@ -16,3 +16,5 @@ IF NOT EXIST build.fsx (
   packages\FAKE\tools\FAKE.exe init.fsx
 )
 packages\FAKE\tools\FAKE.exe build.fsx %*
+
+pause >nul

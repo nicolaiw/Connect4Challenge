@@ -31,11 +31,11 @@ let project = "Connect4Challenge"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the IConnectFour Interface. You can wirte you Code in F# or C#."
+let summary = "Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#."
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
-let description = "Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the IConnectFour Interface. You can wirte you Code in F# or C#."
+let description = "Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#."
 
 // List of author names (for NuGet package)
 let authors = [ "Wirtz N." ]
@@ -82,7 +82,8 @@ Target "AssemblyInfo" (fun _ ->
           Attribute.Product project
           Attribute.Description summary
           Attribute.Version release.AssemblyVersion
-          Attribute.FileVersion release.AssemblyVersion ]
+          Attribute.FileVersion release.AssemblyVersion
+          Attribute.KeyName "Key.snk" ]
 
     let getProjectDetails projectPath =
         let projectName = System.IO.Path.GetFileNameWithoutExtension(projectPath)

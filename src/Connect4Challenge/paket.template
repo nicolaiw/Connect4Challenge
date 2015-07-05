@@ -16,8 +16,8 @@ copyright
 tags
     Connect4 Challenge F# C#
 summary
-    Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the IConnectFour Interface. You can wirte you Code in F# or C#.
+    Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#.
 description
-    Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the IConnectFour Interface. You can wirte you Code in F# or C#.
+    Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#.
 
 

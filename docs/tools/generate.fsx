@@ -19,7 +19,7 @@ let githubLink = "http://github.com/Jallah/Connect4Challenge"
 let info =
   [ "project-name", "Connect4Challenge"
     "project-author", "Wirtz N."
-    "project-summary", "Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the IConnectFour Interface. You can wirte you Code in F# or C#."
+    "project-summary", "Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#."
     "project-github", githubLink
     "project-nuget", "http://nuget.org/packages/Connect4Challenge" ]
 

@@ -146,7 +146,7 @@ let won (x,y) howManyInARow pitch =
     getResults checkList []
 
 // Here the magic happens
-let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]) =
+let game (p1: ConnectFour) (p2: ConnectFour) howManyinARow (startPitch: int[,]) =
     
     // check for max moves
     // check wether x*y % 2 == 0 --> otherwise --> invalid pitch 
@@ -165,7 +165,7 @@ let game (p1: IConnectFour) (p2: IConnectFour) howManyinARow (startPitch: int[,]
         |_ -> failwith "Invalid player index" // should never occour
         players.[playerIndex]
 
-    let rec move (player: IConnectFour) pitchSoFar moveCount log =
+    let rec move (player: ConnectFour) pitchSoFar moveCount log =
         let column = player.Move(pitchSoFar)
 
         match isValidMove column pitchSoFar with
