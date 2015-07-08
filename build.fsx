@@ -127,7 +127,11 @@ Target "CleanDocs" (fun _ ->
 
 Target "Build" (fun _ ->
     !! solutionFile
-    |> MSBuildRelease "" "Rebuild"
+    //|> MSBuildRelease "" "Rebuild"
+    |> MSBuild "" "Rebuild" ([
+                                ("Configuration", "Release"); 
+                                ("DefineConstants", "WIN")
+                              ])
     |> ignore
 )
 
