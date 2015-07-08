@@ -8,10 +8,12 @@ let main argv =
     let sb = new Sandboxer()
     let arr = Array2D.create 7 6 0
     let args = [|arr|]
-    let appDom = sb.setup(@"C:\Users\Nicki\Desktop\Connect4Challenge\tests\Connect4Challenge.TestImplementation\bin\Debug")
+    let appDom = sb.setup(@"C:\Users\Nicki\Desktop\Projects\Connect4Challenge\tests\Connect4Challenge.TestImplementation\bin\Debug")
+    
     let name = appDom.invokeProperty<ConnectFour,string>("Connect4Challenge.TestImplementation","Name")
     let move = appDom.invokeMethod<ConnectFour,int>("Connect4Challenge.TestImplementation","Move", arr)
 
+    printfn "name: %s; move: %i" name move
 
     //let move = sb.invoke<ConnectFour, string>(@"C:\Users\Nicki\Desktop\Connect4Challenge\tests\Connect4Challenge.TestImplementation\bin\Debug", "Connect4Challenge.TestImplementation", MemberType.Method("Move"), arr)
     //let res = newSb.getInterfaceType<ConnectFour>(@"Connect4Challenge.TestImplementation")

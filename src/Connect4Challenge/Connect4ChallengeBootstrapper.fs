@@ -48,7 +48,6 @@ type Sandboxer() =
 
         //Now we have everything we need to create the AppDomain, so let's create it.
         let newDomain = AppDomain.CreateDomain("Sandbox", null, adSetup, permSet, fullTrustAssembly)
-
         //Use CreateInstanceFrom to load an instance of the Sandboxer class into the
         //new AppDomain. 
         let handle = Activator.CreateInstanceFrom(newDomain, typeof<Sandboxer>.Assembly.ManifestModule.FullyQualifiedName, typeof<Sandboxer>.FullName)
@@ -58,45 +57,32 @@ type Sandboxer() =
         let newDomainInstance =  handle.Unwrap() :?> Sandboxer
 
         newDomainInstance
-        //newDomainInstance.getType<'a, 'ret>(untrustedAssemblyName, memberType, args) 
 
-     member this.invokeProperty<'a, 'ret>(untrustedAssemblyName: string, memberName) =
-        //Load the MethodInfo for a method in the new Assembly. This might be a method you know, or 
-        //you can use Assembly.EntryPoint to get to the main function in an executable.
+
+     member private this.getInstance<'a>(untrustedAssemblyName: string) =
+        
         let assembly = Assembly.Load(untrustedAssemblyName)
-
         let ``type`` = typeof<'a>
 
-        let interfaceType = assembly.GetTypes()
+        let instanceType = assembly.GetTypes()
                                 |> Seq.tryFind (fun a -> a.IsSubclassOf(``type``))
         
-        let i = match interfaceType with
+        match instanceType with
                 | Some(ifType) -> match System.Activator.CreateInstance(ifType) |> tryCast<'a> with
                                   | Some(instance) -> instance
                                   | None -> Unchecked.defaultof<'a>
                 | None -> Unchecked.defaultof<'a>
-
-        match tryCast<'ret> (i.GetType().GetProperty(memberName).GetValue(i, null)) with
+    
+    member private this.invoke<'a, 'ret>(untrustedAssemblyName, getMemberValue) =
+        let t = this.getInstance<'a>(untrustedAssemblyName)
+        match tryCast<'ret> (getMemberValue(t)) with
         | Some(T) -> T
         | None -> failwith "Bad return type"
-       
-    member this.invokeMethod<'a, 'ret>(untrustedAssemblyName, memberName, [<ParamArray>] args: Object[]) =
-        //Load the MethodInfo for a method in the new Assembly. This might be a method you know, or 
-        //you can use Assembly.EntryPoint to get to the main function in an executable.
-        let assembly = Assembly.Load(assemblyString= untrustedAssemblyName)
-
-        let ``type`` = typeof<'a>
-
-        let interfaceType = assembly.GetTypes()
-                                |> Seq.tryFind (fun a -> a.IsSubclassOf(``type``))
         
-        let i = match interfaceType with
-                | Some(ifType) -> match System.Activator.CreateInstance(ifType) |> tryCast<'a> with
-                                  | Some(instance) -> instance
-                                  | None -> Unchecked.defaultof<'a>
-                | None -> Unchecked.defaultof<'a>
+    member this.invokeProperty<'a, 'ret>(untrustedAssemblyName, memberName) : 'ret =
+        this.invoke(untrustedAssemblyName, fun t-> t.GetType().GetProperty(memberName).GetValue(t, null))
 
-        match tryCast<'ret> (i.GetType().GetMethod(memberName).Invoke(i, args)) with
-        | Some(T) -> T
-        | None -> failwith "Bad return type"
+    member this.invokeMethod<'a, 'ret>(untrustedAssemblyName, memberName, [<ParamArray>] args: Object[]) : 'ret =
+        this.invoke(untrustedAssemblyName, fun t -> t.GetType().GetMethod(memberName).Invoke(t, args))
+        
 
