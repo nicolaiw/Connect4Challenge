@@ -20,7 +20,7 @@
     <Optimize>false</Optimize>
     <Tailcalls>false</Tailcalls>
     <OutputPath>.\bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WIN</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>.\bin\Debug\Connect4Challenge.xml</DocumentationFile>
     <OtherFlags>--warnon:1182</OtherFlags>
@@ -30,7 +30,7 @@
     <Optimize>true</Optimize>
     <Tailcalls>true</Tailcalls>
     <OutputPath>.\bin\Release</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;WIN</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>.\bin\Release\Connect4Challenge.xml</DocumentationFile>
     <OtherFlags>--warnon:1182</OtherFlags>

@@ -40,11 +40,11 @@ type Sandboxer() =
         //read/discover the location where the untrusted code is loaded.
         let permSet = new PermissionSet(PermissionState.None)
         permSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution)) |> ignore
-#if MONO
-        failwith "mono does not support GetHostEvidence see: http://go-mono.com/status/status.aspx?reference=4.0&profile=4.0&assembly=mscorlib"
-#else
-        //We want the sandboxer assembly's strong name, so that we can add it to the full trust list.
+#if WIN
+//We want the sandboxer assembly's strong name, so that we can add it to the full trust list.
         let fullTrustAssembly = typeof<Sandboxer>.Assembly.Evidence.GetHostEvidence<StrongName>()
+#else
+        failwith "mono does not support GetHostEvidence see: http://go-mono.com/status/status.aspx?reference=4.0&profile=4.0&assembly=mscorlib"
 #endif
         //Now we have everything we need to create the AppDomain, so let's create it.
         let newDomain = AppDomain.CreateDomain("Sandbox", null, adSetup, permSet, fullTrustAssembly)
