@@ -1,5 +1,5 @@
 # Connect4Challenge
-Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#.
+Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F#, C# or if it really needs to be , even in VB.NET :P.
 
 ## Build status
 
