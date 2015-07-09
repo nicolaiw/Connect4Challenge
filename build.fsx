@@ -138,19 +138,10 @@ Target "Build" (fun _ ->
     |> ignore
 )
 #else
+traceImportant "WIN"
+
 Target "Build" (fun _ ->
     
-    !! solutionFile
-    //|> MSBuildRelease "" "Rebuild"
-    |> MSBuild "" "Rebuild" ([
-                                ("Configuration", "Release"); 
-                                //("DefineConstants", "WIN")
-                              ])
-    |> ignore
-)
-#endif
-traceImportant "WIN"
-Target "Build" (fun _ ->
     !! solutionFile
     //|> MSBuildRelease "" "Rebuild"
     |> MSBuild "" "Rebuild" ([
@@ -159,6 +150,7 @@ Target "Build" (fun _ ->
                               ])
     |> ignore
 )
+#endif
 
 // --------------------------------------------------------------------------------------
 // Run the unit tests using test runner
