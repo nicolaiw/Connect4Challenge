@@ -133,7 +133,7 @@ Target "Build" (fun _ ->
     //|> MSBuildRelease "" "Rebuild"
     |> MSBuild "" "Rebuild" ([
                                 ("Configuration", "Release"); 
-                                //("DefineConstants", "WIN")
+                                ("DefineConstants", "MONO")
                               ])
     |> ignore
 )
