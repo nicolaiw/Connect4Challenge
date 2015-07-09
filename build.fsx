@@ -125,6 +125,31 @@ Target "CleanDocs" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Build library & test project
 
+#if MONO
+traceImportant "MONO"
+
+Target "Build" (fun _ ->
+    !! solutionFile
+    //|> MSBuildRelease "" "Rebuild"
+    |> MSBuild "" "Rebuild" ([
+                                ("Configuration", "Release"); 
+                                //("DefineConstants", "WIN")
+                              ])
+    |> ignore
+)
+#else
+Target "Build" (fun _ ->
+    
+    !! solutionFile
+    //|> MSBuildRelease "" "Rebuild"
+    |> MSBuild "" "Rebuild" ([
+                                ("Configuration", "Release"); 
+                                //("DefineConstants", "WIN")
+                              ])
+    |> ignore
+)
+#endif
+traceImportant "WIN"
 Target "Build" (fun _ ->
     !! solutionFile
     //|> MSBuildRelease "" "Rebuild"
