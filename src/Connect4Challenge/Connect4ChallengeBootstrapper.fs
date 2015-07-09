@@ -41,9 +41,10 @@ type Sandboxer() =
         let permSet = new PermissionSet(PermissionState.None)
         permSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution)) |> ignore
 #if WIN
-//We want the sandboxer assembly's strong name, so that we can add it to the full trust list.
+        //We want the sandboxer assembly's strong name, so that we can add it to the full trust list.
         let fullTrustAssembly = typeof<Sandboxer>.Assembly.Evidence.GetHostEvidence<StrongName>()
 #else
+        let fullTrustAssembly = StrongName(null, "", new System.Version()) // just do compile
         failwith "mono does not support GetHostEvidence see: http://go-mono.com/status/status.aspx?reference=4.0&profile=4.0&assembly=mscorlib"
 #endif
         //Now we have everything we need to create the AppDomain, so let's create it.
