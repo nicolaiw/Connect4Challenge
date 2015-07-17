@@ -5,5 +5,8 @@ nuget NUnit
 nuget NUnit.Runners
 nuget FAKE
 nuget SourceLink.Fake
+nuget Nancy
+nuget Nancy.Hosting.Self
+nuget Nancy.Authentication.Forms
 
 github fsharp/FAKE modules/Octokit/Octokit.fsx
