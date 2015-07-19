@@ -50,17 +50,20 @@ type MoveLog =
 let getLine x pitch = 
     let rec lineLoop lineIndex slotValue =
         match slotValue with
-        | _ when lineIndex >= Array2D.length2 pitch -> failwith "No free slot found on column " + x
-        | 0 -> lineIndex-1
+        | _ when lineIndex >= Array2D.length2 pitch -> Option.None //failwith "No free slot found on column " + x
+        | 0 -> Some(lineIndex-1)
         | _ -> lineLoop (lineIndex+1) pitch.[x, lineIndex]
     lineLoop 0 999
 
 let isValidMove column pitch =
-    let row = getLine column pitch
     match column with
-    | i when i < 0 || i > Array2D.length1 pitch  -> Invalid((column,row), "Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.\n Given: " + i.ToString()) // between 0 and 6 (on a 7x6 pitch)
-    | i when pitch.[i, Array2D.length2 pitch] <> 0 -> Invalid((column,row),"Column " + i.ToString() + " is Full.") // check if column is full
-    | _ -> Valid (column, getLine column pitch)
+    | i when i < 0 || i >= Array2D.length1 pitch  -> Invalid((column,-999), "Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.\n Given: " + i.ToString()) // between 0 and 6 (on a 7x6 pitch)
+    | _ -> match getLine column pitch with
+           | Some(row) -> Valid (column, row)
+           | Option.None -> Invalid((column, (Array2D.length2 pitch)-1),"Column " + column.ToString() + " is Full.")
+//    | i when pitch.[i, (Array2D.length2 pitch) - 1] <> 0 -> let row = getLine column pitch
+//                                                            Invalid((column,row),"Column " + i.ToString() + " is Full.") // check if column is full
+//    | _ -> Valid (column, getLine column pitch)
    
 let makeMove column (pitch: int[,]) = 
     let rec testLoop currentLineIndex=
@@ -156,32 +159,31 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyinARow (startPitch: int[,]) 
                    | _ -> failwith ("Invalid Pitch. The number of Slots modulo two has to be zero.")
     
     let players = [|p1;p2|]
-    let mutable playerIndex = 0
-
-    let getNextPlayer = 
-        match playerIndex with
-        | 0 -> playerIndex <- playerIndex+1
-        | 1 -> playerIndex <- playerIndex-1
-        |_ -> failwith "Invalid player index" // should never occour
-        players.[playerIndex]
-
-    let rec move (player: ConnectFour) pitchSoFar moveCount log =
+    
+    let rec move (player: ConnectFour) pitchSoFar moveCount log nextPlayerIndex =
         let column = player.Move(pitchSoFar)
 
         match isValidMove column pitchSoFar with
         | Valid(col,row) -> match won (col ,row) howManyinARow (makeMove col pitchSoFar) with
                             | [] -> match moveCount with 
-                                    | count when count < maxMoves -> move getNextPlayer pitchSoFar (count+1) (UsualMove(player.Name,(col,row))::log)
+                                    | count when count < maxMoves -> let playerMove = UsualMove(player.Name,(col,row))
+                                                                     let player = players.[nextPlayerIndex]
+                                                                     let playerIndex = match nextPlayerIndex with
+                                                                                       | 0 -> 1
+                                                                                       | 1 -> 0
+                                                                                       | _ -> failwith "Invalid player index" // should never occour
+                                                                     let invertedPitch = invertPitch pitchSoFar
+                                                                     move player invertedPitch (count+1) (playerMove::log) playerIndex
                                     | _ -> (UsualMove(player.Name,(col,row))::log) // Tie
                             | wonResults -> let usualMove = UsualMove(player.Name,(col,row))
                                             let wonMove = WonMove(player.Name, wonResults)
-                                            usualMove::wonMove::log 
+                                            wonMove::usualMove::log 
                                             |> List.rev
         | Invalid((col,row),errorMessage) -> let usualMove = UsualMove(player.Name,(col,row))
                                              let message = "(" + col.ToString() + "," + row.ToString() + ") INVALID MOVE: " + errorMessage
                                              let failMove = FailMove(player.Name, message, (col,row))
                                              usualMove::failMove::log
     
-    move players.[playerIndex] startPitch 0 [] //(Array2D.create 7 6 0)
+    move players.[0] startPitch 0 [] 1 //(Array2D.create 7 6 0)
 
     

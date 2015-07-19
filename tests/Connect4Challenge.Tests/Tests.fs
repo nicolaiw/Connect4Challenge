@@ -2,13 +2,14 @@ module Connect4Challenge.Tests
 
 open NUnit.Framework
 open Connect4Challenge.RunTime
+open Connect4Challenge.Interface
 
 [<Test>]
 let ``should return 0 (getLine)`` () =
     let array = Array2D.create 7 6 0
     let line = getLine 2 array
-    printfn "ACTUAL %i" line
-    Assert.AreEqual(line, 0)
+    printfn "ACTUAL %i" line.Value
+    Assert.AreEqual(line.Value, 0)
 
 [<Test>]
 let ``should return 2 (getLine)`` () =
@@ -17,8 +18,8 @@ let ``should return 2 (getLine)`` () =
     array.[2, 1] <- -1
 
     let line = getLine 2 array
-    printfn "ACTUAL %i" line
-    Assert.AreEqual(line, 2)
+    printfn "ACTUAL %i" line.Value
+    Assert.AreEqual(line.Value, 2)
 
 [<Test>]
 let ``should return Won (checkLeftWard)`` () =
@@ -312,4 +313,61 @@ let ``invert pitch (should return -4)`` () =
     printfn "AFTER: %i" res
 
     Assert.AreEqual(-4, res)
+
+
+//_________________________________________________________________________
+//______________________________TEST GAME__________________________________
+
+//______________________________PLAYER 1___________________________________
+type P1() =
+   inherit ConnectFour() with 
+            override this.Name with get() = "P_1"
+            override this.Move pitch =  0
+//_________________________________________________________________________
+
+
+//______________________________PLAYER 2___________________________________
+type P2() =
+   inherit ConnectFour() with 
+            override this.Name with get() = "P_2"
+            override this.Move pitch =  3
+//_________________________________________________________________________
+
+[<Test>]
+let ``Test game (Player 1 should win)`` () =
+    let pitch = Array2D.create 7 6 0
+
+    (*
+       p1    p2
+       _____________
+    5 |_|_|_|_|_|_|_|
+    4 |_|_|_|_|_|_|_|
+    3 |x|_|_|x|_|_|_|
+    2 |x|_|_|x|_|_|_|
+    1 |x|_|_|x|_|_|_| 
+    0 |x|_|_|x|_|_|_| 
+       0 1 2 3 4 5 6  
+    *)
+
+    let p1 = new P1()
+    let p2 = new P2()
+
+    let gameLog = game p1 p2 4 pitch
+
+    let printLog = for i in gameLog do printfn "%A" i
+
+    printLog
+
+    let player = match gameLog |> Seq.last with
+                 | WonMove(player, _) -> player
+                 | _ -> "NOT EXPECTED"
+
+    printfn "ACTUAL: %s" player
+
+    Assert.AreEqual("P_1", player)
+
+//    match gameLog[gameLog.Length -1] with
+//    | WonMove(player, wonCoords) -> printfn "PLAYER: %s" player
+//                                    match wonCoords with
+//                                    |
 

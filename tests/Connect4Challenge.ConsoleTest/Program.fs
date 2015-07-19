@@ -1,29 +1,26 @@
 ﻿open Connect4Challenge.Bootstrapper
 open Connect4Challenge.Interface
+open Connect4Challenge.RunTime
+
 
 
 [<EntryPoint>]
 let main argv = 
 
-    let sb = new Sandboxer()
-    let arr = Array2D.create 7 6 0
-    let args = [|arr|]
-    let appDom = sb.setup(@"C:\Users\Nicki\Desktop\Projects\Connect4Challenge\tests\Connect4Challenge.TestImplementation\bin\Debug")
-    
-    let name = appDom.invokeProperty<ConnectFour,string>("Connect4Challenge.TestImplementation","Name")
-    let move = appDom.invokeMethod<ConnectFour,int>("Connect4Challenge.TestImplementation","Move", arr)
+//    let pitch = Array2D.create 7 6 0 
+//    let l = Array2D.length1 pitch
+//    let moveResult = isValidMove -1 (Array2D.create 7 6 0)
+//    let moveResult2 = isValidMove 0 (Array2D.create 7 6 1)
 
-    printfn "name: %s; move: %i" name move
-
-    //let move = sb.invoke<ConnectFour, string>(@"C:\Users\Nicki\Desktop\Connect4Challenge\tests\Connect4Challenge.TestImplementation\bin\Debug", "Connect4Challenge.TestImplementation", MemberType.Method("Move"), arr)
-    //let res = newSb.getInterfaceType<ConnectFour>(@"Connect4Challenge.TestImplementation")
-//    let i = match tryCast<ConnectFour> newSb with
-//            | Some(o) -> o
-//            | None -> failwith "fail"
-//
-//    let name = i.Name
+//    let sb = new Sandboxer()
 //    let arr = Array2D.create 7 6 0
-//    let res = i.Move(arr)
+//    let args = [|arr|]
+//    let appDom = sb.setup(@"C:\Users\Nicki\Desktop\Projects\Connect4Challenge\tests\Connect4Challenge.TestImplementation\bin\Debug")
+//    
+//    let name = appDom.invokeProperty<ConnectFour,string>("Connect4Challenge.TestImplementation","Name")
+//    let move = appDom.invokeMethod<ConnectFour,int>("Connect4Challenge.TestImplementation","Move", arr)
+//
+//    printfn "name: %s; move: %i" name move
 
     System.Console.ReadKey() |> ignore
     0 // return an integer exit code
