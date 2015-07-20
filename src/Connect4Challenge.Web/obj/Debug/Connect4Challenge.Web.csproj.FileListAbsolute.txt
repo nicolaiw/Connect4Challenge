@@ -30,3 +30,9 @@ C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.exe
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.pdb
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.csprojResolveAssemblyReference.cache
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.dll
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Interface.dll
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Interface.pdb
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Interface.xml
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.pdb
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.xml

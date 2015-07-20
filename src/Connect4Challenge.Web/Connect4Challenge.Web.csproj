@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Connect4Challenge.Web</RootNamespace>
     <AssemblyName>Connect4Challenge.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -83,6 +84,16 @@
     <Content Include="Views\Index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Connect4Challenge.Interface\Connect4Challenge.Interface.fsproj">
+      <Project>{92a13513-810b-4dbe-a8de-aa08756f3538}</Project>
+      <Name>Connect4Challenge.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Connect4Challenge\Connect4Challenge.Runtime.fsproj">
+      <Project>{824e4690-1d6b-4fde-b765-55d47f12d55f}</Project>
+      <Name>Connect4Challenge.Runtime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
