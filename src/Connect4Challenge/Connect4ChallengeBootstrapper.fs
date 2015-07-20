@@ -16,11 +16,11 @@ let tryCast<'a> o =
     | :? 'a as output -> Some output
     | _ -> None
 
-//NOT USED
-let getInterfaceFromAssembly<'a> assemblyPath = 
+let getSubClassFromAssembly<'a> assemblyPath : 'a= 
     let assembly = Assembly.LoadFrom(assemblyPath)
-    let interfaceType = assembly.GetTypes() |> Seq.tryFind (fun a -> a.GetInterface(typeof<'a>.Name) <> null)
-    match interfaceType with
+    let ``type`` = typeof<'a>
+    let instanceType = assembly.GetTypes() |> Seq.tryFind (fun a -> a.IsSubclassOf(``type``))
+    match instanceType with
     | Some(ifType) -> 
         match System.Activator.CreateInstance(ifType) |> tryCast<'a> with
         | Some(instance) -> instance
