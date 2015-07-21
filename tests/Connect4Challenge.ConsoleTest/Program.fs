@@ -20,7 +20,7 @@ let main argv =
 //    let name = appDom.invokeProperty<ConnectFour,string>("Connect4Challenge.TestImplementation","Name")
 //    let move = appDom.invokeMethod<ConnectFour,int>("Connect4Challenge.TestImplementation","Move", arr)
 //
-    printfn "name: %s; move: %i" (o.Name) (o.Move arr)
+//    printfn "name: %s; move: %i" (o.Name) (o.Move arr)
 
     System.Console.ReadKey() |> ignore
     0 // return an integer exit code
