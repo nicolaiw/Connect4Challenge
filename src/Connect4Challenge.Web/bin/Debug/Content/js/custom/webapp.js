@@ -1,1 +1,1 @@
-﻿var app = angular.module('Connect4Challenge', []);
+﻿var app = angular.module('cfc', []);
