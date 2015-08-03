@@ -52,6 +52,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Connect4Challenge.Bot\Connect4Challenge.Bot.csproj">
+      <Name>Connect4Challenge.Bot</Name>
+      <Project>{7edc49fa-6c18-4aae-a1ed-c866d93c3cb4}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Connect4Challenge.Interface\Connect4Challenge.Interface.fsproj">
       <Name>Connect4Challenge.Interface</Name>
       <Project>{92a13513-810b-4dbe-a8de-aa08756f3538}</Project>

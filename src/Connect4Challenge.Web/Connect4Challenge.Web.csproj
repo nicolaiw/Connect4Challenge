@@ -58,6 +58,7 @@
     <Compile Include="Authentication\UserIdentity.cs" />
     <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Modules\GameModule.cs" />
+    <Compile Include="Modules\HomeModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Authentication\UserMapper.cs" />
@@ -77,8 +78,19 @@
     <Content Include="Content\js\custom\controller\gamecontroller.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\js\custom\factories\f_gameservice.js" />
+    <Content Include="Content\js\custom\factories\f_gameservice.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\js\custom\webapiclient.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\js\custom\webapp.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\js\extend.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\js\underscore.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Index.html">
