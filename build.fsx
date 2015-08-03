@@ -396,4 +396,4 @@ Target "All" DoNothing
   ==> "PublishNuget"
   ==> "Release"
 
-RunTargetOrDefault "All"
+RunTargetOrDefault "Build"
