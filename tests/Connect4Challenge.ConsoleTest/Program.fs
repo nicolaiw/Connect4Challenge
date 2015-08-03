@@ -1,7 +1,7 @@
 ﻿open Connect4Challenge.Bootstrapper
 open Connect4Challenge.Interface
 open Connect4Challenge.RunTime
-open Connect4Challenge.Bot
+//open Connect4Challenge.Bot
 
 [<EntryPoint>]
 let main argv = 

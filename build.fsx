@@ -366,8 +366,8 @@ Target "All" DoNothing
   ==> "Build"
   ==> "CopyBinaries"
   ==> "RunTests"
-  ==> "GenerateReferenceDocs"
-  ==> "GenerateDocs"
+//  ==> "GenerateReferenceDocs" https://github.com/fsprojects/ProjectScaffold/issues/170
+//  ==> "GenerateDocs"
   ==> "All"
   =?> ("ReleaseDocs",isLocalBuild)
 
@@ -381,8 +381,8 @@ Target "All" DoNothing
 
 "CleanDocs"
   ==> "GenerateHelp"
-  ==> "GenerateReferenceDocs"
-  ==> "GenerateDocs"
+//  ==> "GenerateReferenceDocs" https://github.com/fsprojects/ProjectScaffold/issues/170
+//  ==> "GenerateDocs"
 
 "CleanDocs"
   ==> "GenerateHelpDebug"
