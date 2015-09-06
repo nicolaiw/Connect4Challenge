@@ -1,4 +1,5 @@
 ﻿using Nancy;
+using Nancy.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +41,18 @@ namespace Connect4Challenge.Web.Modules
             var dynDict = this.Request.Form as DynamicDictionary;
             if (dynDict != null)
             {
-                return dynDict.ContainsKey(key) ? (T)dynDict[key] : default(T);
+                T result;
+                var typeT = typeof(T);
+                if (typeT == typeof(string) || typeT.IsPrimitive)
+                {
+                    result = dynDict.ContainsKey(key) ? (T)dynDict[key] : default(T);
+                }
+                else
+                {
+                    result = dynDict.ContainsKey(key) ? new JavaScriptSerializer().Deserialize<T>(dynDict[key]) : default(T);
+                }
+
+                return result;
             }
             else
             {

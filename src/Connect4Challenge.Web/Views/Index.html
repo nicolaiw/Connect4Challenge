@@ -6,12 +6,68 @@
     <script type="text/javascript" src="/js/angularjs.js"></script>
     <script type="text/javascript" src="/js/extend.js"></script>
     <script type="text/javascript" src="/js/underscore.js"></script>
+    <!--<script type="text/javascript" src="/js/ng-file-upload-all.min.js"></script>-->
+    <script type="text/javascript" src="/js/ng-file-upload.min.js"></script>
+    <script type="text/javascript" src="/js/ng-file-upload-shim.min.js"></script>
     <script type="text/javascript" src="/js/custom/webapp.js"></script>
     <script type="text/javascript" src="/js/custom/webapiclient.js"></script>
     <script type="text/javascript" src="/js/custom/factories/f_gameservice.js"></script>
     <script type="text/javascript" src="/js/custom/controller/gamecontroller.js"></script>
+    <style>
+        .drop-box {
+            background: #F8F8F8;
+            border: 5px dashed #DDD;
+            width: 170px;
+            height: 170px;
+            text-align: center;
+            padding: 100px 10px 0 10px;
+            margin-left: 10px;
+        }
+
+        .dragover {
+            border: 5px dashed blue;
+        }
+    </style>
 </head>
 <body ng-app="cfc" ng-controller="Game_Ctrl" ng-init="init()">
     <p>{{result}}</p>
+
+    <p>Upload your algorithm!</p>
+    <div ngf-drop ngf-select ng-model="playerAssemblyfile" class="drop-box"
+         ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="true"
+         accept=".dll"
+         ngf-pattern=".dll">Drop your assembly here or click to select</div>
+
+    <p>Select an enemy!</p>
+    <div>
+        <label>
+            <input type="checkbox"
+                   ng-model="isCustomEnemy"
+                   ng-value="false"
+                   name="enemyselection"
+                   required />
+            Eigener Gegner
+        </label>
+    </div>
+    <div ng-if="isCustomEnemy">
+        <div ngf-drop ngf-select ng-model="enemyAssemblyfile" class="drop-box"
+             ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="true"
+             accept=".dll"
+             ngf-pattern=".dll">Drop your enemy assembly here or click to select</div>
+    </div>
+    <div ng-if="!isCustomEnemy">
+        <label ng-repeat="bot in bots">
+            <input type="radio"
+                   ng-model="$parent.selectedBot"
+                   ng-value="bot"
+                   name="enemyselection"
+                   ng-checked="bot.checked"
+                   required />
+            {{bot.name}}
+        </label>
+    </div>
+
+
+    <input type="button" ng-click="upload()" value="Start Fighting!" />
 </body>
 </html>

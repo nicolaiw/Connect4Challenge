@@ -24,3 +24,32 @@ C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.csprojResolveAssemblyReference.cache
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.exe
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.pdb
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\angularjs.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\custom\controller\gamecontroller.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\custom\factories\f_gameservice.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\custom\webapiclient.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\custom\webapp.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\extend.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\underscore.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Views\Index.html
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Web.exe.config
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Web.exe
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Web.pdb
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.dll
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Interface.dll
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.Authentication.Forms.dll
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.dll
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.Hosting.Self.dll
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Interface.pdb
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Interface.xml
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.pdb
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.xml
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.xml
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.Authentication.Forms.xml
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.Hosting.Self.xml
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.csprojResolveAssemblyReference.cache
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.exe
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.pdb
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload-all.min.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload-shim.min.js
+C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload.min.js

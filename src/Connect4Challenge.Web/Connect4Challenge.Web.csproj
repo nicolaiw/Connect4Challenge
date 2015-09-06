@@ -56,6 +56,8 @@
   <ItemGroup>
     <Compile Include="ApplicationBootstrapper.cs" />
     <Compile Include="Authentication\UserIdentity.cs" />
+    <Compile Include="Models\BotType.cs" />
+    <Compile Include="Models\UploadModel.cs" />
     <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Modules\GameModule.cs" />
     <Compile Include="Modules\HomeModule.cs" />
@@ -65,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\js\custom\classes\" />
@@ -88,6 +91,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\js\extend.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\js\ng-file-upload-all.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\js\ng-file-upload-shim.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\js\ng-file-upload.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\js\underscore.js">

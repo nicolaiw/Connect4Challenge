@@ -1,1 +1,1 @@
-﻿var app = angular.module('cfc', []);
+﻿var app = angular.module('cfc', ['ngFileUpload']);
