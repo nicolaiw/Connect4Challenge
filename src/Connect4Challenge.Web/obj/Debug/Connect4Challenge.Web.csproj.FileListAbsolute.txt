@@ -53,3 +53,9 @@ C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connec
 C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload-all.min.js
 C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload-shim.min.js
 C:\Users\Alex\Documents\Visual Studio 2013\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload.min.js
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload-all.min.js
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload-shim.min.js
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Content\js\ng-file-upload.min.js
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\FSharp.Core.dll
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\FSharp.Core.xml
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\de\FSharp.Core.resources.dll
