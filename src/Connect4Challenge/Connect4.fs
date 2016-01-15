@@ -33,6 +33,7 @@
 *)
 
 open Connect4Challenge.Interface
+open System.Collections.Generic
 
 type Move =       
    | Invalid of (int*int)*string  // return column, row and an error message        
@@ -43,6 +44,7 @@ type MoveResult =
     | None
 
 type MoveLog =
+    | WonMoveInterOp of string*IEnumerable<IEnumerable<(int*int)>>  // Player, List of Lists with Coordinates 
     | WonMove of string*((int*int) list) list // Player, List of Lists with Coordinates 
     | FailMove of string*string*(int*int) // Player, ErrorMessage, Coordinates
     | UsualMove of string*(int*int) // Player, Coordinates
@@ -130,7 +132,7 @@ let upRightCheck (x,y) howManyInARow pitch = check (x,y) howManyInARow checkUpRi
 let invertPitch pitch = Array2D.map (fun elem -> elem * (-1)) pitch
 
 let won (x,y) howManyInARow pitch = 
-    let addToCheckList f list = f::list
+    let addToCheckList f list = list @ [f]
     let checkList = []
                     |> addToCheckList leftCheck 
                     |> addToCheckList rightCheck
@@ -149,7 +151,7 @@ let won (x,y) howManyInARow pitch =
     getResults checkList []
 
 // Here the magic happens
-let game (p1: ConnectFour) (p2: ConnectFour) howManyinARow (startPitch: int[,]) =
+let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) =
     
     // check for max moves
     // check wether x*y % 2 == 0 --> otherwise --> invalid pitch 
@@ -164,7 +166,7 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyinARow (startPitch: int[,]) 
         let column = player.Move(pitchSoFar)
 
         match isValidMove column pitchSoFar with
-        | Valid(col,row) -> match won (col ,row) howManyinARow (makeMove col pitchSoFar) with
+        | Valid(col,row) -> match won (col ,row) howManyInARow (makeMove col pitchSoFar) with
                             | [] -> match moveCount with 
                                     | count when count < maxMoves -> let playerMove = UsualMove(player.Name,(col,row))
                                                                      let player = players.[nextPlayerIndex]
@@ -186,4 +188,21 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyinARow (startPitch: int[,]) 
     
     move players.[0] startPitch 0 [] 1 //(Array2D.create 7 6 0)
 
-    
+//TODO: to extension ()
+let gameInterOp 
+        (p1: ConnectFour)
+        (p2: ConnectFour)
+        howManyInARow
+        (startPitch: int[,]) =  game
+                                     p1
+                                     p2
+                                     howManyInARow
+                                     startPitch
+                                |> Seq.map (fun log ->
+                                                match log with
+                                                | WonMove (player,coordinates) -> WonMoveInterOp(player, coordinates 
+                                                                                                            |> Seq.map (fun i -> Seq.cast<System.Collections.Generic.IEnumerable<_>> i)
+                                                                                                            |> Seq.cast<System.Collections.Generic.IEnumerable<_>>)
+                                                | _ -> log )
+                                                                                            
+                                                                                         

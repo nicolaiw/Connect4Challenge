@@ -33,13 +33,19 @@
     <p>{{result}}</p>
 
     <p>Upload your algorithm!</p>
-    <div ngf-drop ngf-select ng-model="playerAssemblyfile" class="drop-box"
-         ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="true"
+    <div class="drop-box"
+         ngf-drop
+         ngf-select
+         ng-model="playerAssemblyFile"
+         ngf-drag-over-class="dragover"
+         ngf-multiple="false"
+         ngf-allow-dir="true"
          accept=".dll"
          ngf-pattern=".dll">Drop your assembly here or click to select</div>
+    <div ng-show="playerAssemblyFile != null">{{playerAssemblyFile.name}}</div>
 
     <p>Select an enemy!</p>
-    <div>
+    <!--<div>
         <label>
             <input type="checkbox"
                    ng-model="isCustomEnemy"
@@ -48,14 +54,19 @@
                    required />
             Eigener Gegner
         </label>
-    </div>
-    <div ng-if="isCustomEnemy">
-        <div ngf-drop ngf-select ng-model="enemyAssemblyfile" class="drop-box"
-             ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="true"
-             accept=".dll"
-             ngf-pattern=".dll">Drop your enemy assembly here or click to select</div>
-    </div>
-    <div ng-if="!isCustomEnemy">
+    </div>-->
+    <!-- <div ng-if="isCustomEnemy">  -->
+    <div class="drop-box"
+         ngf-drop ngf-select
+         ng-model="enemyAssemblyFile"
+         ngf-drag-over-class="dragover"
+         ngf-multiple="false"
+         ngf-allow-dir="true"
+         accept=".dll"
+         ngf-pattern=".dll">Drop your enemy assembly here or click to select</div>
+    <div ng-show="enemyAssemblyFile != null">{{enemyAssemblyFile.name}}</div>
+    <!--</div> -->
+    <!--<div ng-if="!isCustomEnemy">
         <label ng-repeat="bot in bots">
             <input type="radio"
                    ng-model="$parent.selectedBot"
@@ -65,9 +76,8 @@
                    required />
             {{bot.name}}
         </label>
-    </div>
+    </div>-->
 
-
-    <input type="button" ng-click="upload()" value="Start Fighting!" />
+    <input type="button" ng-disabled="(playerAssemblyFile == null) || (enemyAssemblyFile == null)" ng-click="upload()" value="Start Fighting!" />
 </body>
 </html>

@@ -20,48 +20,33 @@ namespace Connect4Challenge.Web.Modules
         public GameModule()
             : base("/game")
         {
-            Get["/"] = _ =>
-            {
-                //var p = Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "..", "tests", "Connect4Challenge.TestImplementation", "bin", "Debug", "Connect4Challenge.TestImplementation.dll");
-                var p = Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "..", "src", "Connect4Challenge.Bot", "bin", "Debug", "Connect4Challenge.Bot.dll");
-                var o = Connect4Challenge.Bootstrapper.getSubClassFromAssembly<ConnectFour>(p);
-                var res = "Name: " + o.Name + " Move: " + o.Move(new int[7, 6]);
-                return res;
-            };
-
             Post["/UploadAssembly"] = _ =>
             {
-                var uploadModel = this.FormData<UploadModel>("data");
+                //var uploadModel = this.FormData<UploadModel>("data");
 
-                /* Read Stream */
+                //TODO: remove code duplicates
+
+                //Player 1
+                var pPath = "C:\\Temp\\" + base.Request.Files.ElementAt(0).Name;
                 Stream playerAssemblyStream = base.Request.Files.ElementAt(0).Value;
-                Stream enemyAssemblyStream = base.Request.Files.ElementAt(0).Value;
-
-                /* Generate ConnectFour-Class from Stream */
-                // TODO: Derzeit nur möglich über einen File-Path die Klasse zu erzeugen. Notwendig ist die Übergabe eines Streams ODER abspeichern der uploaded dll
-                //ConnectFour playerAssembly = Connect4Challenge.Bootstrapper.getSubClassFromAssembly<ConnectFour>(playerAssemblyStream);
-                ConnectFour enemyAssembly = null;
-
-
-                switch (uploadModel.BotType)
+                using (var playerFileStream = File.OpenWrite(pPath))
                 {
-                    case BotType.None:
-                        /* Custom enemy assembly uploaded */
-                        enemyAssemblyStream = base.Request.Files.ElementAt(1).Value;
-                        // TODO: dito playerAssembly 
-                        //enemyAssembly = Connect4Challenge.Bootstrapper.getSubClassFromAssembly<ConnectFour>(enemyAssemblyStream);
-                        break;
-                    case BotType.Random:
-                        /* Bot with random moves */
-                        var p = Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "..", "src", "Connect4Challenge.Bot", "bin", "Debug", "Connect4Challenge.Bot.dll");
-                        enemyAssembly = Connect4Challenge.Bootstrapper.getSubClassFromAssembly<ConnectFour>(p);
-                        break;
-                    default:
-                        break;
+                    playerAssemblyStream.CopyTo(playerFileStream);
                 }
+                var player = Bootstrapper.getSubClassFromAssembly<ConnectFour>(pPath);
 
-
-                return "ok";
+                //Player 2
+                var ePath = "C:\\Temp\\" + base.Request.Files.ElementAt(1).Name;
+                Stream enemyAssemblyStream = base.Request.Files.ElementAt(1).Value;
+                using (var enemyFileStream = File.OpenWrite(ePath))
+                {
+                    enemyAssemblyStream.CopyTo(enemyFileStream);
+                }
+                var enemy = Bootstrapper.getSubClassFromAssembly<ConnectFour>(ePath);
+               
+                var res = RunTime.gameInterOp(player, enemy, 4, new int[7, 6]).ToArray();
+                
+                return res;
             };
         }
     }
