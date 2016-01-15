@@ -315,24 +315,14 @@ let ``invert pitch (should return -4)`` () =
     Assert.AreEqual(-4, res)
 
 
-//_________________________________________________________________________
-//______________________________TEST GAME__________________________________
-
-//______________________________PLAYER 1___________________________________
 type P1() =
    inherit ConnectFour() with 
             override this.Name with get() = "P_1"
             override this.Move pitch =  0
-//_________________________________________________________________________
-
-
-//______________________________PLAYER 2___________________________________
 type P2() =
    inherit ConnectFour() with 
             override this.Name with get() = "P_2"
             override this.Move pitch =  3
-//_________________________________________________________________________
-
 [<Test>]
 let ``Test game (Player 1 should win)`` () =
     let pitch = Array2D.create 7 6 0
@@ -365,6 +355,59 @@ let ``Test game (Player 1 should win)`` () =
     printfn "ACTUAL: %s" player
 
     Assert.AreEqual("P_1", player)
+
+
+
+
+type P3() =
+   inherit ConnectFour() with 
+            override this.Name with get() = "P_3"
+            override this.Move pitch =  0
+
+type P4() =
+   inherit ConnectFour() with 
+            override this.Name with get() = "P_4"
+            override this.Move pitch =  3
+//_________________________________________________________________________
+
+[<Test>]
+let ``Test game (invalid move p1)`` () =
+    let pitch = Array2D.create 7 6 0
+
+    (*
+       p3
+       p4
+       _____________
+    5 |4|_|_|_|_|_|_|
+    4 |3|_|_|_|_|_|_|
+    3 |3|_|_|_|_|_|_|
+    2 |2|_|_|_|_|_|_|
+    1 |4|_|_|_|_|_|_| 
+    0 |3|_|_|_|_|_|_| 
+       0 1 2 3 4 5 6  
+    *)
+
+    let p3 = new P3()
+    let p4 = new P4()
+
+    let gameLog = game p3 p4 4 pitch
+
+    let printLog = for i in gameLog do printfn "%A" i
+
+    printLog
+
+    let (x,y) = match gameLog |> Seq.last with
+                 |FailMove(_,_,(x,y)) -> (x,y)
+                 |_ -> failwith "unexpected result"
+
+    let p = match gameLog |> Seq.last with
+                 |FailMove(p,_,_) -> p
+                 |_ -> failwith "unexpected result"
+
+    Assert.AreEqual(0, x)
+    Assert.AreEqual(5, y)
+    Assert.AreEqual("P_3", p)
+
 
 //    match gameLog[gameLog.Length -1] with
 //    | WonMove(player, wonCoords) -> printfn "PLAYER: %s" player

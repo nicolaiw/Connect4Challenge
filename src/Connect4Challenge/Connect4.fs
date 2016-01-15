@@ -184,7 +184,7 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) 
         | Invalid((col,row),errorMessage) -> let usualMove = UsualMove(player.Name,(col,row))
                                              let message = "(" + col.ToString() + "," + row.ToString() + ") INVALID MOVE: " + errorMessage
                                              let failMove = FailMove(player.Name, message, (col,row))
-                                             usualMove::failMove::log
+                                             failMove::usualMove::log
     
     move players.[0] startPitch 0 [] 1 //(Array2D.create 7 6 0)
 
