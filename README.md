@@ -30,7 +30,7 @@ The ``Name`` property is just your name or alias. The Move method gets a 2D Arra
 * -1 values = your opponent's turns
 * 1 values = your turns
 
-Your algorithm has to be return a value between 0 and 6 (on an e.g. 7x6 pitch wich are the normal dimensions for Connect4). This Value is the Columnd you want to insert.
+Your algorithm has to be return a value between 0 and 6 (on an e.g. 7x6 pitch wich are the normal dimensions for Connect4). This returned value is the column you want to insert.
 
 1. Clone this repo
 2. Open an new Project
