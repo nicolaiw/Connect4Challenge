@@ -5,6 +5,7 @@ Connect4Challenge is a programming challenge.
 
 ## Usage
 You can Select two *.dll files. The two implemented algorithms will cempete aganist each other. You just have to implement the following abstract class.
+You can wirte your Code in every .NET Language (even in VB.Net :P).
 
 ``` fsharp
 [<AbstractClass>]
@@ -21,7 +22,6 @@ public abstract class ConnectFour
 }
 ```
 [See](https://github.com/Jallah/Connect4Challenge/blob/master/src/Connect4Challenge.Interface/ConnectFour.fs)
-You can wirte your Code in every .NET Language (even in VB.Net :P)
 
 ## Explaination
 The ``Name`` property is just your name or alias. The Move method gets a 2D Array. This param contains the current Pitch.
