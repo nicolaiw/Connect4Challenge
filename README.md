@@ -26,20 +26,32 @@ type ConnectFour() =
 // C#
 public abstract class ConnectFour
 {
-	public override abstract string Name { get; }
-	public abstract override int Move(int[,] pitch);
+	public abstract string Name { get; }
+    public abstract int Move(int[,] pitch);
 }
 ```
 [See](https://github.com/Jallah/Connect4Challenge/blob/master/src/Connect4Challenge.Interface/ConnectFour.fs)
 
 ## Explaination
-The ``Name`` property is just your name or alias. The Move method gets a 2D Array. This param contains the current Pitch.
+The ``Name`` property is just your name or alias. The ``Move`` method gets a 2D Array. This param contains the current pitch. Each round you got a updated pitch and you can react.
 
 * 0 values = free slots
 * -1 values = your opponent's turns
 * 1 values = your turns
 
 Your algorithm has to be return a value between 0 and 6 (on an e.g. 7x6 pitch wich are the normal dimensions for Connect4). This returned value is the column you want to insert.
+
+## CSharp example
+
+``` csharp
+public class MyConnectFour : ConnectFour
+{
+	public override string Name { get; } = "Foo"; // C# < 6 { get{ return "Foo"; } }
+
+	// always insert to column 1
+    public override int Move(int[,] pitch) => 1; // C# < 6 { return 1; }
+}
+```
 
 ## How to
 1. Clone this repo

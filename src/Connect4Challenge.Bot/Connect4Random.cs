@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Connect4Challenge.Bot
 {
+
     public class Connect4Random : Connect4Challenge.Interface.ConnectFour
     {
         /* Note that it's pretty important NOT to create a new instance each time you need a random number.
