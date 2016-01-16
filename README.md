@@ -1,5 +1,12 @@
 # Connect4Challenge
 
+## Build status
+
+**Master Branch**
+
+[![Build Status](https://travis-ci.org/Jallah/Connect4Challenge.svg?branch=master)](https://travis-ci.org/Jallah/Connect4Challenge)
+[![Build status](https://ci.appveyor.com/api/projects/status/tngsbj4u54o90fit/branch/master?svg=true)](https://ci.appveyor.com/project/Jallah/connect4challenge/branch/master)
+
 ## Description
 Connect4Challenge is a programming challenge.
 
@@ -44,10 +51,4 @@ Your algorithm has to be return a value between 0 and 6 (on an e.g. 7x6 pitch wi
 Note: the first class in your assembly which implements the ConnectFour abstract class will be used. So it is suggested just to have one
 class implementing this class.
 
-## Build status
-
-**Master Branch**
-
-[![Build Status](https://travis-ci.org/Jallah/Connect4Challenge.svg?branch=master)](https://travis-ci.org/Jallah/Connect4Challenge)
-[![Build status](https://ci.appveyor.com/api/projects/status/tngsbj4u54o90fit/branch/master?svg=true)](https://ci.appveyor.com/project/Jallah/connect4challenge/branch/master)
 
