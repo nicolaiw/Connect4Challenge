@@ -26,6 +26,7 @@ namespace Connect4Challenge.Web.Modules
 
                 //TODO: remove code duplicates
                 //TODO: test getSubClassFromAssemblyPath as well
+                //TODO: ExceptionHanlding
 
                 //Player 1
                 Stream playerAssemblyStream = base.Request.Files.ElementAt(0).Value;

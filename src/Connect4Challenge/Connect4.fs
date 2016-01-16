@@ -53,6 +53,64 @@ type MoveLog =
     | FailMove of string*string*(int*int) // Player, ErrorMessage, Coordinates
     | UsualMove of string*(int*int) // Player, Coordinates
 
+let createPitch (log: MoveLog list) pitchMaxX pitchMaxY =
+
+    let slotValues = 
+        let rec loop l acc = 
+            match l with
+            | [] -> acc |> List.rev
+            | hd::tl -> match hd with
+                        | FailMove(player, _, (x,y)) | UsualMove(player,(x,y))| WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> loop tl acc @ [(player,x,y)] 
+        loop log []
+    
+    let playerNames = slotValues |> Seq.distinctBy (fun (p, _, _) -> p) |> Seq.map(fun (p,_,_) -> p) |> Seq.toList 
+
+    let playerSigns = [(playerNames.[0], "x")
+                       (playerNames.[1], "O")]
+
+    let getPlayerSign player = playerSigns |> Seq.find (fun (p,_) -> p = player) |> snd
+
+    let checkSlot (x, y) = match slotValues |> List.tryFind(fun (_, xv, yv) -> x=xv && y=yv) with
+                           | Some((player,_,_)) -> let sign = getPlayerSign player
+                                                   "|" +  sign + "|"
+                           | _ -> "|_|"
+
+    let p = new System.Text.StringBuilder()
+
+    p.Append("Players: ").AppendLine().AppendLine() |> ignore
+    [for pl in playerSigns do 
+        p.Append(fst pl + " = " + snd pl).AppendLine() |> ignore] |>ignore
+
+    p.AppendLine().Append("y").AppendLine() |>ignore
+    p.Append("   ") |> ignore
+
+    [for _ in 0 ..pitchMaxX do
+        p.Append("_  ") |> ignore
+        ] |> ignore
+
+    [for y in 0..pitchMaxY do
+        p.AppendLine().Append(pitchMaxY-y).Append(" ") |> ignore
+        for x in 0..pitchMaxX do
+            let slotValue = checkSlot (x,pitchMaxY-y)
+            p.Append(slotValue) |> ignore] |> ignore
+
+    p.AppendLine().Append("   ") |>ignore
+
+    [for x in 0 ..pitchMaxX do
+        p.Append(x).Append("  ") |> ignore] |> ignore
+
+    p.Append(" x") |> ignore
+
+    p.AppendLine().AppendLine().Append("Game result:").AppendLine().AppendLine() |> ignore
+
+    match log |> Seq.last with
+    | UsualMove(_,(_,_)) -> p.Append("TIE")|> ignore
+    | WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> p.Append(player +  " won (" +  x.ToString() + "," + y.ToString() + ")" ) |>ignore
+    | FailMove(player, ex, _) -> p.Append(player + ": " + ex) |> ignore
+
+    p
+
+
 // returns the next free line for the given column (x)
 let getLine x pitch = 
     let rec lineLoop lineIndex slotValue =
@@ -92,7 +150,7 @@ let getValuesWithIndices startX nextX startY nextY howManyInARow (pitch: int[,])
 
 let getMoveResult howManyInARow valuesAndIndices = let sum = valuesAndIndices 
                                                                 |> List.map (fun (value,_) -> value)
-                                                                |> List.reduce (fun acc elem -> acc + elem)
+                                                                |> List.reduce (+)
                                                    match sum with
                                                    | s when s = howManyInARow -> Won(valuesAndIndices |> List.map (fun (_,indices) -> indices))
                                                    | _ -> None
@@ -117,10 +175,9 @@ let checkUpLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::[checkUpBound
 let checkUpRightBounds (x,y) howManyInARow pitch = checkRightBounds::[checkUpBounds]
                                                    |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
 
-
-let leftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun y -> y) pitch
-let rightResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x+1) (fun y -> y) pitch
-let downResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x) (fun y -> y-1) pitch
+let leftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun _ -> y) pitch
+let rightResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x+1) (fun _ -> y) pitch
+let downResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun _ -> x) (fun y -> y-1) pitch
 let downLeftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun y -> y-1) pitch
 let downRigthResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x+1) (fun y -> y-1) pitch
 let upLeftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun y -> y+1) pitch

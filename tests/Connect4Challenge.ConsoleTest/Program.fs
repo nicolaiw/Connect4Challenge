@@ -1,7 +1,10 @@
 ﻿open Connect4Challenge.Bootstrapper
 open Connect4Challenge.Interface
 open Connect4Challenge.RunTime
+open System.Text
 //open Connect4Challenge.Bot
+
+
 
 type P3() =
    inherit ConnectFour() with 
@@ -15,44 +18,18 @@ type P4() =
 
 let pitch = Array2D.create 7 6 0
 
-    (*
-       p3
-       p4
-       _____________
-    5 |4|_|_|_|_|_|_|
-    4 |3|_|_|_|_|_|_|
-    3 |4|_|_|_|_|_|_|
-    2 |3|_|_|_|_|_|_|
-    1 |4|_|_|_|_|_|_| 
-    0 |3|_|_|_|_|_|_| 
-       0 1 2 3 4 5 6  
-    *)
-
 let p3 = new P3()
 let p4 = new P4()
 
-
-
+let gameLog = game p3 p4 4 pitch
 
 
 [<EntryPoint>]
 let main argv = 
 
-    let gameLog = game p3 p4 4 pitch
-    let l = Array2D.length2 pitch
+    let res = createPitch gameLog (Array2D.length1 pitch-1) (Array2D.length2 pitch-1);
 
-    let printLog = for i in gameLog do printfn "%A" i
-
-//printLog
-
-    let (x,y) = match gameLog |> Seq.last with
-                |FailMove(_,_,(x,y)) -> (x,y)
-                |_ -> failwith "unexpected result"
-
-    let p = match gameLog |> Seq.last with
-             |FailMove(p,_,_) -> p
-             |_ -> failwith "unexpected result"
-
+    printf "%s" (res.ToString())
     
 //    let pitch = Array2D.create 7 6 0 
 //    let l = Array2D.length1 pitch
