@@ -34,11 +34,11 @@ let project = "Connect4Challenge"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#."
+let summary = "Connect4 programming challenge."
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
-let description = "Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#."
+let description = "Connect4 programming challenge."
 
 // List of author names (for NuGet package)
 let authors = [ "Wirtz N." ]
