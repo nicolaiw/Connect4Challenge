@@ -4,7 +4,7 @@
 Connect4Challenge is a programming challenge.
 
 ## Usage
-You can Select to *.dll. The two implemented algorithms will cempete aganist each other. You just have to implement the following abstract class.
+You can Select two *.dll files. The two implemented algorithms will cempete aganist each other. You just have to implement the following abstract class.
 
 ``` fsharp
 [<AbstractClass>]
