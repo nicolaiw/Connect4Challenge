@@ -49,8 +49,8 @@ namespace Connect4Challenge.Web.Modules
                 }
                
                 var res = RunTime.gameInterOp(player, enemy, 4, new int[7, 6]).ToArray();
-                
-                return res;
+                var pitch = RunTime.createPitch(res, 6, 5);
+                return pitch.ToString();
             };
         }
     }

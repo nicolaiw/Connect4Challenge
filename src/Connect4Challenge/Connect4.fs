@@ -53,7 +53,10 @@ type MoveLog =
     | FailMove of string*string*(int*int) // Player, ErrorMessage, Coordinates
     | UsualMove of string*(int*int) // Player, Coordinates
 
-let createPitch (log: MoveLog list) pitchMaxX pitchMaxY =
+let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX pitchMaxY =
+
+    //InterOp
+    let gameLog = log |> List.ofSeq
 
     let slotValues = 
         let rec loop l acc = 
@@ -61,12 +64,12 @@ let createPitch (log: MoveLog list) pitchMaxX pitchMaxY =
             | [] -> acc |> List.rev
             | hd::tl -> match hd with
                         | FailMove(player, _, (x,y)) | UsualMove(player,(x,y))| WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> loop tl acc @ [(player,x,y)] 
-        loop log []
+        loop gameLog []
     
     let playerNames = slotValues |> Seq.distinctBy (fun (p, _, _) -> p) |> Seq.map(fun (p,_,_) -> p) |> Seq.toList 
 
     let playerSigns = [(playerNames.[0], "x")
-                       (playerNames.[1], "O")]
+                       (playerNames.[1], "o")]
 
     let getPlayerSign player = playerSigns |> Seq.find (fun (p,_) -> p = player) |> snd
 
@@ -76,8 +79,8 @@ let createPitch (log: MoveLog list) pitchMaxX pitchMaxY =
                            | _ -> "|_|"
 
     let p = new System.Text.StringBuilder()
-
-    p.Append("Players: ").AppendLine().AppendLine() |> ignore
+    
+    p.AppendLine().Append("Players: ").AppendLine().AppendLine() |> ignore
     [for pl in playerSigns do 
         p.Append(fst pl + " = " + snd pl).AppendLine() |> ignore] |>ignore
 

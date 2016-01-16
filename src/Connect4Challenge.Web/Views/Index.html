@@ -27,10 +27,16 @@
         .dragover {
             border: 5px dashed blue;
         }
+
+        /*div {
+            white-space: pre-wrap;
+        }*/
     </style>
 </head>
 <body ng-app="cfc" ng-controller="Game_Ctrl" ng-init="init()">
-    <p>{{result}}</p>
+    <div style="white-space: pre-wrap">
+        {{result}}
+    </div>
 
     <p>Upload your algorithm!</p>
     <div class="drop-box"
