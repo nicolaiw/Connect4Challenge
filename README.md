@@ -15,10 +15,10 @@ type ConnectFour() =
 
 ``` csharp
 public abstract class ConnectFour
-    {
-        public override abstract string Name { get; }
-        public abstract override int Move(int[,] pitch);
-    }
+{
+	public override abstract string Name { get; }
+	public abstract override int Move(int[,] pitch);
+}
 ```
 [See](https://github.com/Jallah/Connect4Challenge/blob/master/src/Connect4Challenge.Interface/ConnectFour.fs)
 You can wirte your Code in every .NET Language (even in VB.Net :P)
