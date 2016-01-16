@@ -8,8 +8,12 @@ open Connect4Challenge.Interface
 let ``should return 0 (getLine)`` () =
     let array = Array2D.create 7 6 0
     let line = getLine 2 array
-    printfn "ACTUAL %i" line.Value
-    Assert.AreEqual(line.Value, 0)
+    let y = match line with
+            |ValidLine(y) -> printfn "ACTUAL %i" y
+                             y
+            |_ ->failwith "unexpected"
+    
+    Assert.AreEqual(y, 0)
 
 [<Test>]
 let ``should return 2 (getLine)`` () =
@@ -18,8 +22,12 @@ let ``should return 2 (getLine)`` () =
     array.[2, 1] <- -1
 
     let line = getLine 2 array
-    printfn "ACTUAL %i" line.Value
-    Assert.AreEqual(line.Value, 2)
+    let y = match line with
+            |ValidLine(y) -> printfn "ACTUAL %i" y
+                             y
+            |_ ->failwith "unexpected"
+    
+    Assert.AreEqual(y, 2)
 
 [<Test>]
 let ``should return Won (checkLeftWard)`` () =
@@ -344,12 +352,12 @@ let ``Test game (Player 1 should win)`` () =
 
     let gameLog = game p1 p2 4 pitch
 
-    let printLog = for i in gameLog do printfn "%A" i
+    let printLog() = for i in gameLog do printfn "%A" i
 
-    printLog
+    printLog()
 
     let player = match gameLog |> Seq.last with
-                 | WonMove(player, _) -> player
+                 | WonMove(player,_, _) -> player
                  | _ -> "NOT EXPECTED"
 
     printfn "ACTUAL: %s" player
@@ -367,11 +375,11 @@ type P3() =
 type P4() =
    inherit ConnectFour() with 
             override this.Name with get() = "P_4"
-            override this.Move pitch =  3
+            override this.Move pitch =  0
 //_________________________________________________________________________
 
 [<Test>]
-let ``Test game (invalid move p1)`` () =
+let ``Test game (invalid move p3)`` () =
     let pitch = Array2D.create 7 6 0
 
     (*
@@ -380,8 +388,8 @@ let ``Test game (invalid move p1)`` () =
        _____________
     5 |4|_|_|_|_|_|_|
     4 |3|_|_|_|_|_|_|
-    3 |3|_|_|_|_|_|_|
-    2 |2|_|_|_|_|_|_|
+    3 |4|_|_|_|_|_|_|
+    2 |3|_|_|_|_|_|_|
     1 |4|_|_|_|_|_|_| 
     0 |3|_|_|_|_|_|_| 
        0 1 2 3 4 5 6  
@@ -392,9 +400,9 @@ let ``Test game (invalid move p1)`` () =
 
     let gameLog = game p3 p4 4 pitch
 
-    let printLog = for i in gameLog do printfn "%A" i
+    let printLog() = for i in gameLog do printfn "%A" i
 
-    printLog
+    printLog()
 
     let (x,y) = match gameLog |> Seq.last with
                  |FailMove(_,_,(x,y)) -> (x,y)
@@ -405,7 +413,7 @@ let ``Test game (invalid move p1)`` () =
                  |_ -> failwith "unexpected result"
 
     Assert.AreEqual(0, x)
-    Assert.AreEqual(5, y)
+    Assert.AreEqual(6, y)
     Assert.AreEqual("P_3", p)
 
 

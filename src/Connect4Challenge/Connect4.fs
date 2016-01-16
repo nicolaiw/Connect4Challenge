@@ -43,26 +43,33 @@ type MoveResult =
     | Won of (int*int) list // return the coordinates
     | None
 
+type Line =
+     | ValidLine of int
+     | InvalidLine of int
+
 type MoveLog =
-    | WonMoveInterOp of string*IEnumerable<IEnumerable<(int*int)>>  // Player, List of Lists with Coordinates 
-    | WonMove of string*((int*int) list) list // Player, List of Lists with Coordinates 
+    | WonMoveInterOp of string*(int*int)*IEnumerable<IEnumerable<(int*int)>>  // Player, List of Lists with Coordinates 
+    | WonMove of string*(int*int)*((int*int) list) list // Player, wonMove, List of Lists with Coordinates 
     | FailMove of string*string*(int*int) // Player, ErrorMessage, Coordinates
     | UsualMove of string*(int*int) // Player, Coordinates
 
+// returns the next free line for the given column (x)
 let getLine x pitch = 
     let rec lineLoop lineIndex slotValue =
         match slotValue with
-        | _ when lineIndex >= Array2D.length2 pitch -> Option.None //failwith "No free slot found on column " + x
-        | 0 -> Some(lineIndex-1)
-        | _ -> lineLoop (lineIndex+1) pitch.[x, lineIndex]
-    lineLoop 0 999
+        | v when lineIndex = (Array2D.length2 pitch)-1 -> match v with
+                                                          | 0 -> ValidLine(lineIndex)
+                                                          | _ -> InvalidLine(lineIndex+1) // now free slot in columnd x --> return the invalid line
+        | 0 -> ValidLine(lineIndex)
+        | _ -> lineLoop (lineIndex+1) pitch.[x, lineIndex+1]
+    lineLoop 0 pitch.[x, 0]
 
 let isValidMove column pitch =
     match column with
     | i when i < 0 || i >= Array2D.length1 pitch  -> Invalid((column,-999), "Just columns between 0 and " + ((Array2D.length1 pitch)-1).ToString() + " are Valid.\n Given: " + i.ToString()) // between 0 and 6 (on a 7x6 pitch)
     | _ -> match getLine column pitch with
-           | Some(row) -> Valid (column, row)
-           | Option.None -> Invalid((column, (Array2D.length2 pitch)-1),"Column " + column.ToString() + " is Full.")
+           | ValidLine(row) -> Valid (column, row)
+           | InvalidLine(row) -> Invalid((column, row),"Column " + column.ToString() + " is Full.")
 //    | i when pitch.[i, (Array2D.length2 pitch) - 1] <> 0 -> let row = getLine column pitch
 //                                                            Invalid((column,row),"Column " + i.ToString() + " is Full.") // check if column is full
 //    | _ -> Valid (column, getLine column pitch)
@@ -101,13 +108,13 @@ let checkLeftBounds (x,_) howManyInARow _ = x+1 < howManyInARow
 let checkRightBounds (x,_) howManyInARow pitch = x + howManyInARow > Array2D.length1 pitch
 let checkDownBounds (_,y) howManyInARow _ = y+1 < howManyInARow
 let checkUpBounds (_,y) howManyInARow pitch = y + howManyInARow > Array2D.length2 pitch
-let checkDownLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::checkDownBounds::[] 
+let checkDownLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::[checkDownBounds] 
                                                     |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
-let checkDownRightBounds (x,y) howManyInARow pitch = checkRightBounds::checkDownBounds::[]
+let checkDownRightBounds (x,y) howManyInARow pitch = checkRightBounds::[checkDownBounds]
                                                      |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
-let checkUpLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::checkUpBounds::[]
+let checkUpLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::[checkUpBounds]
                                                   |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
-let checkUpRightBounds (x,y) howManyInARow pitch = checkRightBounds::checkUpBounds::[]
+let checkUpRightBounds (x,y) howManyInARow pitch = checkRightBounds::[checkUpBounds]
                                                    |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
 
 
@@ -177,14 +184,14 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) 
                                                                      let invertedPitch = invertPitch pitchSoFar
                                                                      move player invertedPitch (count+1) (playerMove::log) playerIndex
                                     | _ -> (UsualMove(player.Name,(col,row))::log) // Tie
-                            | wonResults -> let usualMove = UsualMove(player.Name,(col,row))
-                                            let wonMove = WonMove(player.Name, wonResults)
-                                            wonMove::usualMove::log 
+                            | wonResults -> let wonMove = WonMove(player.Name,(col,row), wonResults)
+                                            wonMove::log 
                                             |> List.rev
-        | Invalid((col,row),errorMessage) -> let usualMove = UsualMove(player.Name,(col,row))
+        | Invalid((col,row),errorMessage) -> //let usualMove = UsualMove(player.Name,(col,row))
                                              let message = "(" + col.ToString() + "," + row.ToString() + ") INVALID MOVE: " + errorMessage
                                              let failMove = FailMove(player.Name, message, (col,row))
-                                             failMove::usualMove::log
+                                             failMove::log
+                                             |> List.rev
     
     move players.[0] startPitch 0 [] 1 //(Array2D.create 7 6 0)
 
@@ -200,9 +207,9 @@ let gameInterOp
                                      startPitch
                                 |> Seq.map (fun log ->
                                                 match log with
-                                                | WonMove (player,coordinates) -> WonMoveInterOp(player, coordinates 
-                                                                                                            |> Seq.map (fun i -> Seq.cast<System.Collections.Generic.IEnumerable<_>> i)
-                                                                                                            |> Seq.cast<System.Collections.Generic.IEnumerable<_>>)
+                                                | WonMove (player,wonCoords, coordinates) -> WonMoveInterOp(player,wonCoords, coordinates 
+                                                                                                                                |> Seq.map (fun i -> Seq.cast<System.Collections.Generic.IEnumerable<_>> i)
+                                                                                                                                |> Seq.cast<System.Collections.Generic.IEnumerable<_>>)
                                                 | _ -> log )
                                                                                             
                                                                                          
