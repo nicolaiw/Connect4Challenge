@@ -46,6 +46,7 @@ C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.Authentication.Forms.dll
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.dll
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.Hosting.Self.dll
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\FSharp.Core.dll
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Interface.pdb
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.Interface.xml
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Connect4Challenge.pdb
@@ -53,9 +54,8 @@ C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.xml
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.Authentication.Forms.xml
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\Nancy.Hosting.Self.xml
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\FSharp.Core.xml
+C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\de\FSharp.Core.resources.dll
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.csprojResolveAssemblyReference.cache
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.exe
 C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\obj\Debug\Connect4Challenge.Web.pdb
-C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\FSharp.Core.dll
-C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\FSharp.Core.xml
-C:\Users\Nicki\Desktop\Projects\Connect4Challenge\src\Connect4Challenge.Web\bin\Debug\de\FSharp.Core.resources.dll

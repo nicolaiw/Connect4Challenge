@@ -16,8 +16,7 @@ let tryCast<'a> o =
     | :? 'a as output -> Some output
     | _ -> None
 
-let getSubClassFromAssembly<'a> assemblyPath : 'a= 
-    let assembly = Assembly.LoadFrom(assemblyPath)
+let getSubClass<'a> (assembly: Assembly) =
     let ``type`` = typeof<'a>
     let instanceType = assembly.GetTypes() |> Seq.tryFind (fun a -> a.IsSubclassOf(``type``))
     match instanceType with
@@ -26,6 +25,13 @@ let getSubClassFromAssembly<'a> assemblyPath : 'a=
         | Some(instance) -> instance
         | None -> Unchecked.defaultof<'a>
     | None -> Unchecked.defaultof<'a>
+     
+let getSubClassFromAssemblyPath<'a> assemblyPath : 'a= 
+     getSubClass<'a> (Assembly.LoadFrom(assemblyPath))
+
+let getSubClassFromAssemblyBytes<'a> (bytes: byte[]) : 'a= 
+    getSubClass<'a> (Assembly.Load(bytes))
+
 
 //MONO does not Support GetHostEvidence. 
 //TODO: if MONO run Code in the full trusted AppDomain. This Application should be started with an restricted user on Linux.

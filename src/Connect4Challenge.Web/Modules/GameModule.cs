@@ -25,24 +25,27 @@ namespace Connect4Challenge.Web.Modules
                 //var uploadModel = this.FormData<UploadModel>("data");
 
                 //TODO: remove code duplicates
+                //TODO: test getSubClassFromAssemblyPath as well
 
                 //Player 1
-                var pPath = "C:\\Temp\\" + base.Request.Files.ElementAt(0).Name;
                 Stream playerAssemblyStream = base.Request.Files.ElementAt(0).Value;
-                using (var playerFileStream = File.OpenWrite(pPath))
-                {
-                    playerAssemblyStream.CopyTo(playerFileStream);
-                }
-                var player = Bootstrapper.getSubClassFromAssembly<ConnectFour>(pPath);
+                ConnectFour player;
 
-                //Player 2
-                var ePath = "C:\\Temp\\" + base.Request.Files.ElementAt(1).Name;
-                Stream enemyAssemblyStream = base.Request.Files.ElementAt(1).Value;
-                using (var enemyFileStream = File.OpenWrite(ePath))
+                using (var memoryStream = new MemoryStream())
                 {
-                    enemyAssemblyStream.CopyTo(enemyFileStream);
+                    playerAssemblyStream.CopyTo(memoryStream);
+                    player = Connect4Challenge.Bootstrapper.getSubClassFromAssemblyBytes<ConnectFour>(memoryStream.ToArray());
                 }
-                var enemy = Bootstrapper.getSubClassFromAssembly<ConnectFour>(ePath);
+               
+                //Player 2
+                Stream enemyAssemblyStream = base.Request.Files.ElementAt(1).Value;
+                ConnectFour enemy;
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    enemyAssemblyStream.CopyTo(memoryStream);
+                    enemy = Connect4Challenge.Bootstrapper.getSubClassFromAssemblyBytes<ConnectFour>(memoryStream.ToArray());
+                }
                
                 var res = RunTime.gameInterOp(player, enemy, 4, new int[7, 6]).ToArray();
                 
