@@ -15,6 +15,7 @@ You can Select two *.dll files. The two implemented algorithms will cempete agan
 You can wirte your Code in every .NET Language (even in VB.Net :P).
 
 ``` fsharp
+// F#
 [<AbstractClass>]
 type ConnectFour() =
     abstract member Name : string with get
@@ -22,6 +23,7 @@ type ConnectFour() =
 ```
 
 ``` csharp
+// C#
 public abstract class ConnectFour
 {
 	public override abstract string Name { get; }
@@ -39,6 +41,7 @@ The ``Name`` property is just your name or alias. The Move method gets a 2D Arra
 
 Your algorithm has to be return a value between 0 and 6 (on an e.g. 7x6 pitch wich are the normal dimensions for Connect4). This returned value is the column you want to insert.
 
+## How to
 1. Clone this repo
 2. Open an new Project
 3. On Windows run build.cmd on Linux run build.sh
@@ -50,5 +53,8 @@ Your algorithm has to be return a value between 0 and 6 (on an e.g. 7x6 pitch wi
 
 Note: the first class in your assembly which implements the ConnectFour abstract class will be used. So it is suggested just to have one
 class implementing this class.
+
+## Content
+This project contains a web project to upload the algorithms which is not hosted yet. If you want to play arround go to /tests/Connect4Challenge.ConsoleTest/Program.fs.This file contains two players and prints the result to the console.
 
 
