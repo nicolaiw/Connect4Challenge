@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4Challenge.Web", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4Challenge.Bot", "src\Connect4Challenge.Bot\Connect4Challenge.Bot.csproj", "{7EDC49FA-6C18-4AAE-A1ED-C866D93C3CB4}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Connect4Challenge.ConsoleMutliPlayer", "Connect4Challenge.ConsoleMutliPlayer\Connect4Challenge.ConsoleMutliPlayer.fsproj", "{7A934306-423E-4EF7-8C0F-DD37296E6203}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Connect4Challenge.ConsoleMutliPlayer", "tests\Connect4Challenge.ConsoleMutliPlayer\Connect4Challenge.ConsoleMutliPlayer.fsproj", "{7A934306-423E-4EF7-8C0F-DD37296E6203}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
