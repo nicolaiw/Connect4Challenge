@@ -350,7 +350,7 @@ let ``Test game (Player 1 should win)`` () =
     let p1 = new P1()
     let p2 = new P2()
 
-    let gameLog = game p1 p2 4 pitch
+    let gameLog = game p1 p2 4 pitch (fun _ -> ())
 
     let printLog() = for i in gameLog do printfn "%A" i
 
@@ -398,7 +398,7 @@ let ``Test game (invalid move p3)`` () =
     let p3 = new P3()
     let p4 = new P4()
 
-    let gameLog = game p3 p4 4 pitch
+    let gameLog = game p3 p4 4 pitch (fun _->())
 
     let printLog() = for i in gameLog do printfn "%A" i
 

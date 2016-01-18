@@ -51,7 +51,8 @@ type MoveLog =
     | WonMoveInterOp of string*(int*int)*IEnumerable<IEnumerable<(int*int)>>  // Player, List of Lists with Coordinates 
     | WonMove of string*(int*int)*((int*int) list) list // Player, wonMove, List of Lists with Coordinates 
     | FailMove of string*string*(int*int) // Player, ErrorMessage, Coordinates
-    | UsualMove of string*(int*int) // Player, Coordinates
+    | UsualMove of string*(int*int) // Player, 
+    | Tie of string*(int*int)
 
 let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX pitchMaxY =
 
@@ -63,7 +64,7 @@ let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX
             match l with
             | [] -> acc |> List.rev
             | hd::tl -> match hd with
-                        | FailMove(player, _, (x,y)) | UsualMove(player,(x,y))| WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> loop tl acc @ [(player,x,y)] 
+                        | Tie(player,(x,y))| FailMove(player, _, (x,y)) | UsualMove(player,(x,y))| WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> loop tl acc @ [(player,x,y)]
         loop gameLog []
     
     let playerNames = slotValues 
@@ -119,10 +120,10 @@ let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX
     match Seq.length log with
     |l when l = 0 -> ()
     | _ -> match log |> Seq.last with
-           | UsualMove(_,(_,_)) -> p.Append("TIE")|> ignore
+           | Tie(x,y) -> p.Append("Tie: last move (" + x.ToString() + "," + y.ToString() + ")") |>ignore
            | WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> p.Append(player +  " won (" +  x.ToString() + "," + y.ToString() + ")" ) |>ignore
            | FailMove(player, ex, _) -> p.Append(player + ": " + ex) |> ignore
-
+           | UsualMove(_,(_,_)) -> ()
     p
 
 
@@ -232,6 +233,8 @@ let won (x,y) howManyInARow pitch =
 // Here the magic happens
 let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) afterEachMove=
     
+    //TODO: check if howManyInARow is possible to the given pitch
+
     // check for max moves
     // check wether x*y % 2 == 0 --> otherwise --> invalid pitch 
     // example: 3*3 = 9; 9/2 = 4,5 --> not valid because on player could do more moves than the other
@@ -255,7 +258,8 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) 
                                                                                        | _ -> failwith "Invalid player index" // should never occour
                                                                      let invertedPitch = invertPitch pitchSoFar
                                                                      move player invertedPitch (count+1) (playerMove::log) playerIndex
-                                    | _ -> (UsualMove(player.Name,(col,row))::log) // Tie
+                                    | _ ->  Tie(player.Name,(col,row))::log 
+                                            |> List.rev//(UsualMove(player.Name,(col,row))::log) // Tie
                             | wonResults -> let wonMove = WonMove(player.Name,(col,row), wonResults)
                                             wonMove::log 
                                             |> List.rev
@@ -265,7 +269,7 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) 
                                              failMove::log
                                              |> List.rev
     
-    move players.[0] startPitch 0 [] 1 //(Array2D.create 7 6 0)
+    move players.[0] startPitch 1 [] 1 //(Array2D.create 7 6 0)
 
 //TODO: to extension ()
 let gameInterOp 
@@ -273,8 +277,8 @@ let gameInterOp
         (p2: ConnectFour)
         howManyInARow
         (startPitch: int[,]) 
-        onEachMove =
-          game p1 p2 howManyInARow startPitch onEachMove
+        =
+          game p1 p2 howManyInARow startPitch (fun _ ->()) //TODO: interop
           |> Seq.map (fun log ->
                         match log with
                         | WonMove (player,wonCoords, coordinates) ->
