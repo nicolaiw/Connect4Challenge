@@ -33,7 +33,7 @@ public abstract class ConnectFour
 [See](https://github.com/Jallah/Connect4Challenge/blob/master/src/Connect4Challenge.Interface/ConnectFour.fs)
 
 ## Explaination
-The ``Name`` property is just your name or alias. The ``Move`` method gets a 2D Array. This param contains the current pitch. Each round you got a updated pitch and you can react.
+The ``Name`` property is just your name or alias. The ``Move`` method gets a 2D Array. This param contains the current pitch. Each round you got an updated pitch and you can react.
 
 * 0 values = free slots
 * -1 values = your opponent's turns
