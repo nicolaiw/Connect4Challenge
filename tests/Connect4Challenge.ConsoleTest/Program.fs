@@ -21,7 +21,7 @@ let pitch = Array2D.create 7 6 0
 let p3 = new P3()
 let p4 = new P4()
 
-let gameLog = game p3 p4 4 pitch
+let gameLog = game p3 p4 4 pitch (fun _ ->())
 
 
 [<EntryPoint>]
@@ -46,5 +46,7 @@ let main argv =
 //
 //    printfn "name: %s; move: %i" (o.Name) (o.Move arr)
 
+    System.Console.ReadLine() |> ignore
     System.Console.ReadKey() |> ignore
+
     0 // return an integer exit code

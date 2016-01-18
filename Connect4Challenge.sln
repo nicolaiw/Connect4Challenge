@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{63297B98-5CED-492C-A5B7-A5B4F73CF142}"
 	ProjectSection(SolutionItems) = preProject
@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4Challenge.Web", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4Challenge.Bot", "src\Connect4Challenge.Bot\Connect4Challenge.Bot.csproj", "{7EDC49FA-6C18-4AAE-A1ED-C866D93C3CB4}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Connect4Challenge.ConsoleMutliPlayer", "Connect4Challenge.ConsoleMutliPlayer\Connect4Challenge.ConsoleMutliPlayer.fsproj", "{7A934306-423E-4EF7-8C0F-DD37296E6203}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{7EDC49FA-6C18-4AAE-A1ED-C866D93C3CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EDC49FA-6C18-4AAE-A1ED-C866D93C3CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EDC49FA-6C18-4AAE-A1ED-C866D93C3CB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A934306-423E-4EF7-8C0F-DD37296E6203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A934306-423E-4EF7-8C0F-DD37296E6203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A934306-423E-4EF7-8C0F-DD37296E6203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A934306-423E-4EF7-8C0F-DD37296E6203}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +97,6 @@ Global
 		{04E2BB31-E48B-41D4-931E-9687B09A120A} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
 		{5DCC50E9-5DE2-42F7-A623-8439BDBB553E} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
 		{E89709B5-45C9-4680-987E-A158B16186C4} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
+		{7A934306-423E-4EF7-8C0F-DD37296E6203} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
 	EndGlobalSection
 EndGlobal

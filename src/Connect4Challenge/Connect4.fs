@@ -66,12 +66,22 @@ let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX
                         | FailMove(player, _, (x,y)) | UsualMove(player,(x,y))| WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> loop tl acc @ [(player,x,y)] 
         loop gameLog []
     
-    let playerNames = slotValues |> Seq.distinctBy (fun (p, _, _) -> p) |> Seq.map(fun (p,_,_) -> p) |> Seq.toList 
+    let playerNames = slotValues 
+                      |> Seq.distinctBy (fun (p, _, _) -> p)
+                      |> Seq.map(fun (p,_,_) -> p)
+                      |> Seq.toList 
 
-    let playerSigns = [(playerNames.[0], "x")
-                       (playerNames.[1], "o")]
+    let playerSigns = seq{
+                          if playerNames.Length > 0 then yield (playerNames.[0], "x")
+                          if playerNames.Length > 1 then yield (playerNames.[1], "o")
+                         }
+                        
 
-    let getPlayerSign player = playerSigns |> Seq.find (fun (p,_) -> p = player) |> snd
+    let getPlayerSign player = match Seq.exists (fun (p,_) -> p=player) playerSigns with
+                               | false -> "_"
+                               | _ -> playerSigns
+                                      |> Seq.find (fun (p,_) -> p = player) 
+                                      |> snd
 
     let checkSlot (x, y) = match slotValues |> List.tryFind(fun (_, xv, yv) -> x=xv && y=yv) with
                            | Some((player,_,_)) -> let sign = getPlayerSign player
@@ -106,10 +116,12 @@ let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX
 
     p.AppendLine().AppendLine().Append("Game result:").AppendLine().AppendLine() |> ignore
 
-    match log |> Seq.last with
-    | UsualMove(_,(_,_)) -> p.Append("TIE")|> ignore
-    | WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> p.Append(player +  " won (" +  x.ToString() + "," + y.ToString() + ")" ) |>ignore
-    | FailMove(player, ex, _) -> p.Append(player + ": " + ex) |> ignore
+    match Seq.length log with
+    |l when l = 0 -> ()
+    | _ -> match log |> Seq.last with
+           | UsualMove(_,(_,_)) -> p.Append("TIE")|> ignore
+           | WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> p.Append(player +  " won (" +  x.ToString() + "," + y.ToString() + ")" ) |>ignore
+           | FailMove(player, ex, _) -> p.Append(player + ": " + ex) |> ignore
 
     p
 
@@ -218,7 +230,7 @@ let won (x,y) howManyInARow pitch =
     getResults checkList []
 
 // Here the magic happens
-let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) =
+let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) afterEachMove=
     
     // check for max moves
     // check wether x*y % 2 == 0 --> otherwise --> invalid pitch 
@@ -229,9 +241,9 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) 
     
     let players = [|p1;p2|]
     
-    let rec move (player: ConnectFour) pitchSoFar moveCount log nextPlayerIndex =
+    let rec move (player: ConnectFour) pitchSoFar moveCount log nextPlayerIndex=
+        if Seq.length log <> 0 then afterEachMove(log)
         let column = player.Move(pitchSoFar)
-
         match isValidMove column pitchSoFar with
         | Valid(col,row) -> match won (col ,row) howManyInARow (makeMove col pitchSoFar) with
                             | [] -> match moveCount with 
@@ -260,16 +272,15 @@ let gameInterOp
         (p1: ConnectFour)
         (p2: ConnectFour)
         howManyInARow
-        (startPitch: int[,]) =  game
-                                     p1
-                                     p2
-                                     howManyInARow
-                                     startPitch
-                                |> Seq.map (fun log ->
-                                                match log with
-                                                | WonMove (player,wonCoords, coordinates) -> WonMoveInterOp(player,wonCoords, coordinates 
-                                                                                                                                |> Seq.map (fun i -> Seq.cast<System.Collections.Generic.IEnumerable<_>> i)
-                                                                                                                                |> Seq.cast<System.Collections.Generic.IEnumerable<_>>)
-                                                | _ -> log )
+        (startPitch: int[,]) 
+        onEachMove =
+          game p1 p2 howManyInARow startPitch onEachMove
+          |> Seq.map (fun log ->
+                        match log with
+                        | WonMove (player,wonCoords, coordinates) ->
+                             WonMoveInterOp(player,wonCoords, coordinates 
+                                                              |> Seq.map (fun i -> Seq.cast<System.Collections.Generic.IEnumerable<_>> i)
+                                                              |> Seq.cast<System.Collections.Generic.IEnumerable<_>>)
+                        | _ -> log )
                                                                                             
                                                                                          

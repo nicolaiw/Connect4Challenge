@@ -68,5 +68,5 @@ class implementing this class.
 
 ## Content
 This project contains a web project to upload the algorithms which is not hosted yet. If you want to play arround go to /tests/Connect4Challenge.ConsoleTest/Program.fs.This file contains two players and prints the result to the console.
-
+The solution also contains a console mutliplayer /test//Connect4Challenge.ConsoleTest/Connect4Challenge.ConsoleMutliPlayer
 

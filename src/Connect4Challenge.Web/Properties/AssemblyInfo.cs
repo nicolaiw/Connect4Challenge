@@ -3,7 +3,7 @@ using System.Reflection;
 
 [assembly: AssemblyTitleAttribute("Connect4Challenge.Web")]
 [assembly: AssemblyProductAttribute("Connect4Challenge")]
-[assembly: AssemblyDescriptionAttribute("Connect4Challenge is a programming challenge. You can compete against our algorithm by implementing the ConnectFour Interface. You can wirte you Code in F# or C#.")]
+[assembly: AssemblyDescriptionAttribute("Connect4 programming challenge.")]
 [assembly: AssemblyVersionAttribute("0.0.2")]
 [assembly: AssemblyFileVersionAttribute("0.0.2")]
 namespace System {
