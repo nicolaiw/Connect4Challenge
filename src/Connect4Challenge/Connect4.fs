@@ -257,17 +257,18 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) 
                                                                                        | 1 -> 0
                                                                                        | _ -> failwith "Invalid player index" // should never occour
                                                                      let invertedPitch = invertPitch pitchSoFar
-                                                                     move player invertedPitch (count+1) (playerMove::log) playerIndex
-                                    | _ ->  Tie(player.Name,(col,row))::log 
-                                            |> List.rev//(UsualMove(player.Name,(col,row))::log) // Tie
-                            | wonResults -> let wonMove = WonMove(player.Name,(col,row), wonResults)
-                                            wonMove::log 
+                                                                     move player invertedPitch (count+1) ([playerMove] @ log ) playerIndex
+                                    | _ ->  [Tie(player.Name,(col,row))] @ log
                                             |> List.rev
+                                            //(UsualMove(player.Name,(col,row))::log) // Tie
+                            | wonResults -> let wonMove = WonMove(player.Name,(col,row), wonResults)
+                                            [wonMove] @ log
+                                            |> List.rev 
         | Invalid((col,row),errorMessage) -> //let usualMove = UsualMove(player.Name,(col,row))
                                              let message = "(" + col.ToString() + "," + row.ToString() + ") INVALID MOVE: " + errorMessage
                                              let failMove = FailMove(player.Name, message, (col,row))
-                                             failMove::log
-                                             |> List.rev
+                                             [failMove] @ log
+                                             |> List.rev 
     
     move players.[0] startPitch 1 [] 1 //(Array2D.create 7 6 0)
 
