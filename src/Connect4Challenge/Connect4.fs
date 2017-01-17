@@ -62,7 +62,7 @@ let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX
     let slotValues = 
         let rec loop l acc = 
             match l with
-            | [] -> acc |> List.rev
+            | [] -> acc// |> List.rev
             | hd::tl -> match hd with
                         | Tie(player,(x,y))| FailMove(player, _, (x,y)) | UsualMove(player,(x,y))| WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> loop tl acc @ [(player,x,y)]
         loop gameLog []
