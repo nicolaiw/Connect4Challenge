@@ -26,7 +26,7 @@ type ConnectFour() =
 // C#
 public abstract class ConnectFour
 {
-	public abstract string Name { get; }
+    public abstract string Name { get; }
     public abstract int Move(int[,] pitch);
 }
 ```
