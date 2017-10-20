@@ -46,9 +46,9 @@ Your algorithm has to be return a value between 0 and 6 (on an e.g. 7x6 pitch wi
 ``` csharp
 public class MyConnectFour : ConnectFour
 {
-	public override string Name { get; } = "Foo"; // C# < 6 { get{ return "Foo"; } }
+    public override string Name { get; } = "Foo"; // C# < 6 { get{ return "Foo"; } }
 
-	// always insert to column 1
+    // always insert to column 1
     public override int Move(int[,] pitch) => 1; // C# < 6 { return 1; }
 }
 ```
