@@ -1,6 +1,7 @@
 source https://nuget.org/api/v2
 
 
+nuget FSharp.Core 4.5.2
 nuget FSharp.Formatting
 nuget NUnit
 nuget NUnit.Runners

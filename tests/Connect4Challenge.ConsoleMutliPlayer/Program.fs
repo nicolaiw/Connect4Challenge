@@ -23,8 +23,14 @@ let pitch = Array2D.create 7 6 0
 let p1 = new P1()
 let p2 = new P2()
 
-let printLog log = let res = createPitch log (Array2D.length1 pitch-1) (Array2D.length2 pitch-1)
-                   System.Console.Clear()
+let players = seq { 
+                    yield (p1.Name, "x") 
+                    yield (p2.Name, "o")
+                  }
+
+let printLog log = let res = createPitch log (Array2D.length1 pitch-1) (Array2D.length2 pitch-1) players
+                   System.Console.Clear()                                                         
+                                                                                                  
                    printf "%s" (res.ToString())
 
 

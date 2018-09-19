@@ -54,7 +54,7 @@ type MoveLog =
     | UsualMove of string*(int*int) // Player, 
     | Tie of string*(int*int)
 
-let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX pitchMaxY =
+let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX pitchMaxY playerSigns =
 
     //InterOp
     let gameLog = log |> List.ofSeq
@@ -67,17 +67,6 @@ let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX
                         | Tie(player,(x,y))| FailMove(player, _, (x,y)) | UsualMove(player,(x,y))| WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> loop tl acc @ [(player,x,y)]
         loop gameLog []
     
-    let playerNames = slotValues 
-                      |> Seq.distinctBy (fun (p, _, _) -> p)
-                      |> Seq.map(fun (p,_,_) -> p)
-                      |> Seq.toList 
-
-    let playerSigns = seq{
-                          if playerNames.Length > 0 then yield (playerNames.[0], "x")
-                          if playerNames.Length > 1 then yield (playerNames.[1], "o")
-                         }
-                        
-
     let getPlayerSign player = match Seq.exists (fun (p,_) -> p=player) playerSigns with
                                | false -> "_"
                                | _ -> playerSigns
@@ -120,8 +109,8 @@ let createPitch (log: System.Collections.Generic.IEnumerable<MoveLog>) pitchMaxX
     match Seq.length log with
     |l when l = 0 -> ()
     | _ -> match log |> Seq.last with
-           | Tie(x,y) -> p.Append("Tie: last move (" + x.ToString() + "," + y.ToString() + ")") |>ignore
-           | WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> p.Append(player +  " won (" +  x.ToString() + "," + y.ToString() + ")" ) |>ignore
+           | Tie(x,y) -> p.Append("Tie: last move (" + x.ToString() + "," + y.ToString() + ")") |> ignore
+           | WonMove(player, (x,y), _) | WonMoveInterOp(player, (x,y), _) -> p.Append(player +  " won (" +  x.ToString() + "," + y.ToString() + ")" ) |> ignore
            | FailMove(player, ex, _) -> p.Append(player + ": " + ex) |> ignore
            | UsualMove(_,(_,_)) -> ()
     p
@@ -182,14 +171,10 @@ let checkLeftBounds (x,_) howManyInARow _ = x+1 < howManyInARow
 let checkRightBounds (x,_) howManyInARow pitch = x + howManyInARow > Array2D.length1 pitch
 let checkDownBounds (_,y) howManyInARow _ = y+1 < howManyInARow
 let checkUpBounds (_,y) howManyInARow pitch = y + howManyInARow > Array2D.length2 pitch
-let checkDownLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::[checkDownBounds] 
-                                                    |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
-let checkDownRightBounds (x,y) howManyInARow pitch = checkRightBounds::[checkDownBounds]
-                                                     |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
-let checkUpLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::[checkUpBounds]
-                                                  |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
-let checkUpRightBounds (x,y) howManyInARow pitch = checkRightBounds::[checkUpBounds]
-                                                   |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
+let checkDownLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::[checkDownBounds] |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
+let checkDownRightBounds (x,y) howManyInARow pitch = checkRightBounds::[checkDownBounds] |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
+let checkUpLeftBounds (x,y) howManyInARow pitch = checkLeftBounds::[checkUpBounds] |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
+let checkUpRightBounds (x,y) howManyInARow pitch = checkRightBounds::[checkUpBounds] |> List.exists (fun checkFun -> checkFun (x,y) howManyInARow pitch)
 
 let leftResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x-1) (fun _ -> y) pitch
 let rightResult (x,y) howManyInARow pitch = getResult (x,y) howManyInARow (fun x -> x+1) (fun _ -> y) pitch
@@ -257,7 +242,7 @@ let game (p1: ConnectFour) (p2: ConnectFour) howManyInARow (startPitch: int[,]) 
                                                                                        | 1 -> 0
                                                                                        | _ -> failwith "Invalid player index" // should never occour
                                                                      let invertedPitch = invertPitch pitchSoFar
-                                                                     move player invertedPitch (count+1) ([playerMove] @ log ) playerIndex
+                                                                     move player invertedPitch (count+1) ([playerMove] @ log) playerIndex
                                     | _ ->  [Tie(player.Name,(col,row))] @ log
                                             |> List.rev
                                             //(UsualMove(player.Name,(col,row))::log) // Tie
