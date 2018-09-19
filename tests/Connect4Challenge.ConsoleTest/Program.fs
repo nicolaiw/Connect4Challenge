@@ -9,7 +9,7 @@ open System.Text
 type P3() =
    inherit ConnectFour() with 
             override this.Name with get() = "P_3"
-            override this.Move pitch =  0
+            override this.Move pitch =  1
 
 type P4() =
    inherit ConnectFour() with 
@@ -23,11 +23,15 @@ let p4 = new P4()
 
 let gameLog = game p3 p4 4 pitch (fun _ ->())
 
+let players = seq {
+                    yield (p3.Name, "x")
+                    yield (p4.Name, "o")
+                  }
 
 [<EntryPoint>]
 let main argv = 
 
-    let res = createPitch gameLog (Array2D.length1 pitch-1) (Array2D.length2 pitch-1);
+    let res = createPitch gameLog (Array2D.length1 pitch-1) (Array2D.length2 pitch-1) players;
 
     printf "%s" (res.ToString())
     
