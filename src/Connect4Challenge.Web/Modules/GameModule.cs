@@ -45,11 +45,18 @@ namespace Connect4Challenge.Web.Modules
                 using (var memoryStream = new MemoryStream())
                 {
                     enemyAssemblyStream.CopyTo(memoryStream);
-                    enemy = Connect4Challenge.Bootstrapper.getSubClassFromAssemblyBytes<ConnectFour>(memoryStream.ToArray());
+                    enemy = Bootstrapper.getSubClassFromAssemblyBytes<ConnectFour>(memoryStream.ToArray());
                 }
                
                 var res = RunTime.gameInterOp(player, enemy, 4, new int[7, 6]).ToArray();
-                var pitch = RunTime.createPitch(res, 6, 5);
+
+                var playerNameSignMapping = new List<Tuple<string, string>>
+                {
+                    Tuple.Create(player.Name, "x"),
+                    Tuple.Create(enemy.Name, "o")
+                };
+
+                var pitch = RunTime.createPitch(res, 6, 5, playerNameSignMapping);
                 return pitch.ToString();
             };
         }
